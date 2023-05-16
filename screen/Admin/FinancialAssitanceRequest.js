@@ -30,7 +30,6 @@ const FinancialAssitanceRequest = ({ navigation }) => {
                 <Text style={styles.fontDesign}>{item.name}</Text>
                 <Text style={styles.fontDesign}>B{item.program}{item.semester}{item.section}</Text>
                 {/* <Text style={styles.fontDesign}>{item.session}</Text> */}
-                <Text style={styles.fontDesign}>{item.description}</Text>
             </View>
             <View style={styles.subDiv}>
                 {

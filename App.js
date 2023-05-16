@@ -50,6 +50,8 @@ import FinancialAssistance from './screen/Student/FinancialAssistance';
 import FineDetail from './screen/Student/FineDetail';
 import UploadFine from './screen/Student/UploadFine';
 import ParentDashboard from './screen/Parent/ParentDashboard';
+import AddNoticeboard from './screen/Admin/AddNoticeboard';
+import NoticeboardDetail from './screen/Admin/NoticeboardDetail';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -519,6 +521,26 @@ const App = () => {
                     name="ParentDashboard"
                     component={ParentDashboard}
                     options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="AddNoticeboard"
+                    component={AddNoticeboard}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="NoticeboardDetail"
+                    component={NoticeboardDetail}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
                 />
             </Stack.Navigator>
 

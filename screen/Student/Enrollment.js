@@ -13,6 +13,7 @@ const Enrollment = () => {
     const [pickerValues, setPickerValues] = useState([]);
     const [selectedProgram, setSelectedProgram] = useState('')
     const [username, setUsername] = useState('');
+    const [totalCreditHours, setTotalCreditHours] = useState(0);
     console.log("selectedProgram", selectedProgram)
     const GetEnrollmentCourses = async () => {
         console.log("fetching.....")
@@ -28,6 +29,16 @@ const Enrollment = () => {
             );
             console.log("Done")
             const data = await response.json();
+            const enrollmentCourses = data.enrollmentCourses;
+
+            // Calculate the sum of credit hours
+            let totalCreditHours = 0;
+            enrollmentCourses.forEach((course) => {
+                totalCreditHours += course.credit_hours;
+            });
+            setTotalCreditHours(totalCreditHours);
+            // Output the total sum of credit hours
+            console.log(`Total Credit Hours: ${totalCreditHours}`);
             setEnrollment(data);
             let temp = [];
             data.enrollmentCourses.map((ele) => {
@@ -219,6 +230,7 @@ const Enrollment = () => {
                         </View>
                     ))
                 }
+                <Text style={styles.end}>Total Credit Hours={totalCreditHours}</Text>
                 <TouchableOpacity style={styles.button} onPress={submit}>
                     <Text style={styles.buttonLabel}>Enroll</Text>
                 </TouchableOpacity>
@@ -246,5 +258,14 @@ const styles = StyleSheet.create({
     {
         flex: 1,
         backgroundColor: 'white'
+    },
+    end:
+    {
+        textAlign: 'right',
+        fontWeight: '800',
+        marginRight: 20,
+        marginVertical: 20,
+        fontSize: 20,
+        color: "black"
     }
 })

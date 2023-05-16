@@ -1,4 +1,4 @@
-import { ActivityIndicator, StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, ScrollView, ToastAndroid } from 'react-native'
+import { ActivityIndicator, StyleSheet, Text, Pressable, View, Dimensions, FlatList, TouchableOpacity, ScrollView, ToastAndroid } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import IP from '../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -47,13 +47,13 @@ const EvaluationTeacher = ({ navigation }) => {
         };
         return (
             <View>
-                <TouchableOpacity style={styles.boxes}
-                    onPress={() => handler()}>
+                <Pressable style={styles.boxes}
+                    onPressIn={() => handler()}>
                     <View>
                         <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', color: 'black' }}>{item.course_name}</Text>
                         <Text style={{ textAlign: 'center', fontSize: 15, color: 'black' }}>{item.course_code}</Text>
                     </View>
-                </TouchableOpacity>
+                </Pressable>
             </View>
 
         )

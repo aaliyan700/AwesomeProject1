@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, } from 'react';
+import { Pressable, StyleSheet, Text, View, ActivityIndicator, FlatList, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
 const ViewFeeStatus = ({ navigation }) => {
@@ -31,20 +31,21 @@ const ViewFeeStatus = ({ navigation }) => {
     };
     const renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={styles.feeContainer}
-                onPress={() => navigation.navigate("UploadChallan", { item })}>
-                <Text style={styles.fontStyle}>Installment No:{item.installment_no}</Text>
-                <Text style={styles.fontStyle}>Amount:{item.amount}</Text>
-                <Text style={styles.fontStyle}>Expiry Date:{item.expiry_date}</Text>
-                <Text style={styles.fontStyle}>Issue Date:{item.issue_date}</Text>
-                {/* <Button mode="contained" style={styles.btn} onPress={() => uploadFile(item.id)}>Upload Challan</Button>
-                <Button mode="contained" style={styles.btn} onPress={() => navigation.navigate("UploadChallan")}>Upload Challan</Button> */}
-                {item.status ? (
-                    <Text>Paid</Text>
-                ) : (
-                    <Text>Not Paid</Text>
-                )}
-            </TouchableOpacity>
+            <Pressable style={styles.feeContainer}
+                onPressIn={() => navigation.navigate("UploadChallan", { item })}>
+                <View
+                >
+                    <Text style={styles.fontStyle}>Installment No:{item.installment_no}</Text>
+                    <Text style={styles.fontStyle}>Amount:{item.amount}</Text>
+                </View>
+                <View style={{ justifyContent: 'center', marginLeft: 200 }}>
+                    {item.status ? (
+                        <Text style={styles.statusFont}>Paid</Text>
+                    ) : (
+                        <Text style={styles.statusFont}>Pending</Text>
+                    )}
+                </View>
+            </Pressable>
         );
     };
     useEffect(() => {
@@ -90,9 +91,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         margin: 10,
-        alignItems: 'center',
         elevation: 7,
         borderRadius: 10,
+        flexDirection: 'row',
     },
     fontStyle:
     {
@@ -103,6 +104,11 @@ const styles = StyleSheet.create({
     {
         backgroundColor: '#099e78',
         margin: 5
+    },
+    statusFont:
+    {
+        color: 'black',
+        fontSize: 12
     }
 });
 

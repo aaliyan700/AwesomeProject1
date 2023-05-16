@@ -75,7 +75,6 @@ const App = () => {
 
             </View>
             {/*Showing the data of selected Single file*/}
-
             <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}

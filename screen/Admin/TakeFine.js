@@ -32,11 +32,12 @@ const TakeFine = ({ route }) => {
     }
     return (
         <View style={styles.container}>
+            <Text style={{ textAlign: 'center', fontSize: 30, marginTop: 10, color: 'black', fontFamily: 'cursive' }}>Fine</Text>
             <View style={styles.subContainer}>
-                <TextInput label={"Amount"} mode="outlined" value={amount}
+                <TextInput placeholder='Enter Amount' mode="outlined" value={amount}
                     onChangeText={(text) => setAmount(text)}></TextInput>
-                <TextInput label={"Description"} mode="outlined" value={des}
-                    onChangeText={(text) => setDes(text)}></TextInput>
+                <TextInput placeholder="Enter Description" multiline value={des} mode="outlined" onChangeText={(val) => setDes(val)}
+                    style={{ height: 200 }}></TextInput>
                 <Button mode="contained" onPress={AddFine} style={styles.btn}
                 >Submit</Button>
             </View>
@@ -62,5 +63,9 @@ const styles = StyleSheet.create({
     {
         marginVertical: 20,
         backgroundColor: "#099e78"
+    },
+    input:
+    {
+        height: 200
     }
 })

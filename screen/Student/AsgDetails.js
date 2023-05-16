@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { FlatGrid } from 'react-native-super-grid';
 import IP from '../ip';
@@ -71,13 +71,13 @@ const AsgDetails = ({ navigation }) => {
             // navigation.navigate('Attendence', { arrayOfObject: item });
         };
         return (
-            <TouchableOpacity style={styles.boxes}
-                onPress={() => handler()}>
+            <Pressable style={styles.boxes}
+                onPressIn={() => handler()}>
                 <View>
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black' }}>{item.courseName}</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 12, color: 'black' }}>{item.courseCode}</Text>
+                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 15, color: 'black', fontFamily: 'cursive' }}>{item.courseCode}</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', color: 'black', fontFamily: 'cursive' }}>{item.courseName}</Text>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         )
     }
     return (

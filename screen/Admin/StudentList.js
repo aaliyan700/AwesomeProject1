@@ -1,6 +1,6 @@
 import {
     StyleSheet, Text, View, FlatList, Image, ActivityIndicator,
-    RefreshControl, TouchableOpacity
+    RefreshControl, TouchableOpacity, Pressable
 } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import IP from '../ip';
@@ -29,7 +29,7 @@ const StudentList = ({ navigation }) => {
         GetStudents();
     }, []);
     const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.mainDiv}
+        <Pressable style={styles.mainDiv}
             onPress={() => navigation.navigate('StudentFeeStatus', { item })}>
             <View>
                 <Text style={styles.fontDesign}>{item.regNo}</Text>
@@ -52,7 +52,7 @@ const StudentList = ({ navigation }) => {
                         )
                 }
             </View>
-        </TouchableOpacity>
+        </Pressable>
     );
 
     const onRefresh = () => {

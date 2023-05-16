@@ -39,9 +39,26 @@ const Datesheet = () => {
     const showItems = ({ item }) => {
         return (
             <View style={styles.dateSheet}>
-                <Text style={{ fontSize: 18, color: 'black' }}>{item.courseName}</Text>
+                <Text style={{ fontSize: 18, color: 'black', textAlign: 'left' }}>{item.courseName}</Text>
                 <Text style={{ fontSize: 15, color: 'black' }}>{item.day}</Text>
                 <Text style={{ fontSize: 15, color: 'black' }}>{item.time}</Text>
+                {
+                    item.time === "9:30 AM - 12:30 PM" ? (
+
+                        <View>
+                            <Text style={{ fontSize: 15, color: 'black' }}>Morning</Text>
+                        </View>
+
+                    ) : (
+
+                        <View>
+                            <Text style={{ fontSize: 15, color: 'black' }}>Evening</Text>
+                        </View>
+
+                    )
+
+
+                }
             </View>
         )
     }
@@ -94,7 +111,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         margin: 10,
-        alignItems: 'center',
         elevation: 7,
         borderRadius: 10
     }

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TouchableRipple } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView, TouchableRipple, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { FlatGrid } from 'react-native-super-grid'
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -74,12 +74,12 @@ const Dashboard = ({ navigation, route }) => {
         {
             title: "Results",
             navigateScreen: "StudentPerformance",
-            icon: require("../images/attendance.png")
+            icon: require("../images/assessment.png")
         },
         {
-            title: "Assessment",
+            title: "Evaluation",
             navigateScreen: "Assessment",
-            icon: require("../images/datesheet.png")
+            icon: require("../images/evaluation.png")
         },
     ]
     const showItems = ({ item }) => {
@@ -87,16 +87,16 @@ const Dashboard = ({ navigation, route }) => {
             navigation.navigate(item.navigateScreen);
         };
         return (
-            <TouchableOpacity style={styles.boxes}
-                onPress={() => handler()}>
+            <Pressable style={styles.boxes}
+                onPressIn={() => handler()}>
                 <View style={{ elevation: 1, marginHorizontal: 2, backgroundColor: 'white', padding: 34, borderRadius: 16 }}>
 
-                    <Image source={item.icon} style={{ alignSelf: 'center', height: 60, width: 60, resizeMode: 'contain' }} />
+                    <Image source={item.icon} style={{ alignSelf: 'center', height: 50, width: 50, resizeMode: 'contain' }} />
 
-                    <Text style={{ textAlign: 'center', fontSize: 18, color: 'black', paddingVertical: 10 }}>{item.title}</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 13, color: 'black', paddingVertical: 10 }}>{item.title}</Text>
                 </View>
 
-            </TouchableOpacity>
+            </Pressable>
 
         )
     }
@@ -113,7 +113,7 @@ const Dashboard = ({ navigation, route }) => {
                     <View style={styles.header}>
                         <View style={{ flexDirection: 'column', marginTop: 10 }}>
                             <Text style={styles.headerFont}>Dashboard</Text>
-                            <Text style={styles.header2Font}>Welcome {userInfo.first_name}</Text>
+                            <Text style={styles.header2Font}>Welcome ,{userInfo.first_name}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
                             {/* <TouchableOpacity
@@ -124,13 +124,11 @@ const Dashboard = ({ navigation, route }) => {
                             <TouchableOpacity>
 
                                 {
-                                    userInfo.profile_photo ? (<Image source={{ uri: imageUri }} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain', borderRadius: 100 }}></Image>) :
+                                    userInfo.profile_photo ? (<Image source={{ uri: imageUri }} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain', borderRadius: 20 }}></Image>) :
                                         (<Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} />)
                                 }
 
                                 {/* <Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} /> */}
-
-
                             </TouchableOpacity>
                             <Menu
                                 visible={visible}
@@ -174,19 +172,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#099e78',
         justifyContent: 'space-between',
         padding: 12,
-
     },
     headerFont:
     {
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
-
+        fontFamily: 'cursive',
         color: 'white'
     },
     header2Font:
     {
         fontSize: 18,
-
+        fontFamily: 'cursive',
         color: 'white'
     },
 

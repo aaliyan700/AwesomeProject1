@@ -295,7 +295,7 @@ const GradeStudent = ({ navigation, route }) => {
                                     onChangeText={(val) => setTotalMarks(val)} value={totalMarks} />
                                 <TextInput label="Assignment Title" placeholder='Assignment Title' mode="outlined"
                                     value={title}
-                                    onChangeText={(val) => setTitle(val)}
+                                    onChangeText={(val1) => setTitle(val1)}
                                 />
                             </View>
                         ) : type === "quiz" ? (
@@ -304,7 +304,7 @@ const GradeStudent = ({ navigation, route }) => {
                                     onChangeText={(val) => setTotalMarks(val)}
                                     value={totalMarks} />
                                 <TextInput label="Quiz Title" placeholder='Quiz Title' mode="outlined"
-                                    onChangeText={(val) => setTitle(val)}
+                                    onChangeText={(val1) => setTitle(val1)}
                                     value={title} />
                             </View>
                         ) : ("")

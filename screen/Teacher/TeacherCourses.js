@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Pressable, FlatList, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import IP from '../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -48,13 +48,13 @@ const TeacherCourses = ({ navigation }) => {
         };
         return (
             <View>
-                <TouchableOpacity style={styles.boxes}
-                    onPress={() => handler()}>
+                <Pressable style={styles.boxes}
+                    onPressIn={() => handler()}>
                     <View>
                         <Text style={{ textAlign: 'center', fontSize: 16, color: 'black', color: 'black' }}>{item.course_name}</Text>
                         <Text style={{ textAlign: 'center', fontSize: 14, color: 'black' }}>{item.course_code}</Text>
                     </View>
-                </TouchableOpacity>
+                </Pressable>
             </View>
 
         )

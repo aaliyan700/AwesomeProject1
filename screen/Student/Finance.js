@@ -1,13 +1,23 @@
 import { StyleSheet, Text, View, TouchableOpacity, Pressable } from 'react-native'
 import React from 'react'
-import { Button } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 const Finance = ({ navigation }) => {
+
     return (
         <View style={styles.container}>
             <View style={styles.btnContainer}>
-                <Button style={styles.btn} color='white' onPress={() => navigation.navigate("FineDetail")}>Fine</Button>
-                <Button style={styles.btn} color='white' onPress={() => navigation.navigate("FeeDetails")}>Fee</Button>
-                <Button style={styles.btn} color='white' onPress={() => navigation.navigate("FinancialAssistance")}>Financial Assistance</Button>
+                <Pressable style={styles.pressBtn} onPressIn={() => navigation.navigate("FineDetail")}>
+                    <Icon name="notifications" size={30} color='#fff' />
+                    <Text style={styles.fontBtn}>Fine</Text>
+                </Pressable>
+                <Pressable style={styles.pressBtn} onPressIn={() => navigation.navigate("FinancialAssistance")}>
+                    <Icon name="notifications" size={30} color='#fff' />
+                    <Text style={styles.fontBtn}>FinancialAssistance</Text>
+                </Pressable>
+                <Pressable style={styles.pressBtn} onPressIn={() => navigation.navigate("FeeDetails")} >
+                    <Icon name="notifications" size={30} color='#fff' />
+                    <Text style={styles.fontBtn}>Fee</Text>
+                </Pressable>
             </View>
         </View>
     )
@@ -40,6 +50,22 @@ const styles = StyleSheet.create({
     {
         justifyContent: 'center',
         marginTop: '50%'
+    },
+    pressBtn:
+    {
+        backgroundColor: "#099e78",
+        padding: 20,
+        marginHorizontal: 20,
+        borderRadius: 10,
+        marginVertical: 10,
+        flexDirection: 'row',
+    },
+    fontBtn:
+    {
+        fontSize: 20,
+        textAlign: 'center',
+        color: 'white',
+        justifyContent: 'center'
     }
 })
 

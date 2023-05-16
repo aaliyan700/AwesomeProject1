@@ -107,6 +107,8 @@ const Attendence = ({ navigation, route }) => {
                                 <RadioButton value='class' label="Class" />
                                 <Text style={{ margin: 10, color: 'black' }}>Lab</Text>
                                 <RadioButton value='lab' label="Class" />
+                                <Text style={{ margin: 10, color: 'black' }}>All</Text>
+                                <RadioButton value='all' label="all" />
                             </View>
                         </View>
                     </RadioButton.Group>
@@ -157,6 +159,36 @@ const Attendence = ({ navigation, route }) => {
 
                             )
                         }
+                        else if (val.type == type) {
+                            <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
+                                {
+                                    val.status == "A" ?
+                                        <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                            <View style={styles.box}>
+
+                                                <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
+                                                    <Text style={{ marginLeft: 15, fontSize: 15, color: 'black', fontFamily: 'arial' }}>{val.status}</Text>
+                                                </View>
+                                                <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
+                                                    <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
+                                                </View>
+                                            </View>
+                                        </View> :
+                                        <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
+                                            <View style={styles.box}>
+
+                                                <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
+                                                    <Text style={{ marginLeft: 15, fontSize: 15, color: 'black', fontFamily: 'arial' }}>{val.status}</Text>
+                                                </View>
+                                                <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
+                                                    <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                }
+                            </View>
+
+                        }
                         else {
                             <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
                                 {
@@ -184,10 +216,44 @@ const Attendence = ({ navigation, route }) => {
                                             </View>
                                         </View>
                                 }
-
                             </View>
 
+                        }
+                    })
+                }
+                {
+                    item.detail.map((val, index) => {
+                        if (type === "all") {
+                            return (
+                                <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
+                                    {
+                                        val.status == "A" ?
+                                            <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                                <View style={styles.box}>
 
+                                                    <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
+                                                        <Text style={{ marginLeft: 15, fontSize: 15, color: 'black', fontFamily: 'arial' }}>{val.status}</Text>
+                                                    </View>
+                                                    <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
+                                                        <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
+                                                    </View>
+                                                </View>
+                                            </View> :
+                                            <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
+                                                <View style={styles.box}>
+
+                                                    <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
+                                                        <Text style={{ marginLeft: 15, fontSize: 15, color: 'black', fontFamily: 'arial' }}>{val.status}</Text>
+                                                    </View>
+                                                    <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
+                                                        <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                    }
+                                </View>
+
+                            )
                         }
                     })
                 }

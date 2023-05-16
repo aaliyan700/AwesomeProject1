@@ -139,19 +139,22 @@ const RequestDetail = ({ route }) => {
         }
     };
     const renderItem = ({ item }) => (
-        <View style={styles.imageContainer}>
-            <Image
-                source={{ uri: `http://${IP}/StudentPortal/FinancialAssistanceImages/${item}` }}
-                style={styles.image}
-            />
+        <View>
+            <View style={styles.imageContainer}>
+
+                <Image
+                    source={{ uri: `http://${IP}/StudentPortal/FinancialAssistanceImages/${item}` }}
+                    style={styles.image}
+                />
+            </View>
         </View>
     );
-
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
                 <Text style={styles.font}>{item.reg_no}</Text>
                 <Text style={styles.font}>{item.name}</Text>
+                <Text style={{ color: 'black' }}>Application:   {item.description}</Text>
             </View>
             {isLoading ? ( // Show activity indicator while loading data
                 <ActivityIndicator style={styles.activityIndicator} />

@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, ActivityIndicator, Pressable } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { FlatGrid } from 'react-native-super-grid';
 import IP from '../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { amber100 } from 'react-native-paper/lib/typescript/styles/colors';
 const AttendenceCourses = ({ navigation }) => {
     const [coursesList, setCoursesList] = useState([]);
     const [studentAttendance, setStudentAttendance] = useState([]);
@@ -54,13 +55,14 @@ const AttendenceCourses = ({ navigation }) => {
             navigation.navigate('Attendence', { item, coursesList });
         };
         return (
-            <TouchableOpacity style={styles.boxes}
-                onPress={() => handler()}>
+            <Pressable style={styles.boxes}
+                onPressIn={() => handler()}>
                 <View>
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black' }}>{item.courseName}</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black' }}>{item.courseCode}</Text>
+                    {/* <Text style={{ textAlign: 'center', fontSize: 15, color: 'black' }}>{item.courseName}</Text> */}
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', fontFamily: 'cursive' }}>{item.courseCode}</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', fontFamily: 'cursive' }}>{item.courseName}</Text>
                 </View>
-            </TouchableOpacity>
+            </Pressable>
         )
 
     }
