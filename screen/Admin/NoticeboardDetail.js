@@ -22,35 +22,6 @@ const NoticeboardDetail = ({ route }) => {
     useEffect(() => {
         getSectionList();
     }, [])
-    // const apiResponse = [
-    //     {
-    //         program: 'CS',
-    //         semesters: [
-    //             { no: 1, sections: ['A', 'B'] },
-    //             { no: 2, sections: ['A', 'B', 'C'] },
-    //             { no: 3, sections: ['A'] },
-    //             { no: 4, sections: ['A', 'B', 'C'] },
-    //             { no: 5, sections: ['A', 'B'] },
-    //             { no: 6, sections: ['A'] },
-    //             { no: 7, sections: ['A', 'B', 'C'] },
-    //             { no: 8, sections: ['A'] },
-    //         ],
-    //     },
-    //     {
-    //         program: 'IT',
-    //         semesters: [
-    //             { no: 1, sections: ['A', 'B'] },
-    //             { no: 2, sections: ['A', 'B', 'C'] },
-    //             { no: 3, sections: ['A'] },
-    //             { no: 4, sections: ['A', 'B', 'C'] },
-    //             { no: 5, sections: ['A', 'B'] },
-    //             { no: 6, sections: ['A'] },
-    //             { no: 7, sections: ['A', 'B', 'C'] },
-    //             { no: 8, sections: ['A'] },
-    //         ],
-    //     },
-    // ];
-
     const [selectedPrograms, setSelectedPrograms] = useState([]);
     const [selectedSemesters, setSelectedSemesters] = useState([]);
     const [selectedSections, setSelectedSections] = useState([]);
@@ -75,7 +46,7 @@ const NoticeboardDetail = ({ route }) => {
             },
             slist: [{
                 section: 'A',
-                semester: 7,
+                semester: 6,
                 program: 'CS'
             }]
         }
