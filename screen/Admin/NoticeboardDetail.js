@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Alert, ScrollView, StyleSheet } from 'react-native';
 import { List } from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
-import { Button } from 'react-native-paper';
+import { Button, Divider } from 'react-native-paper';
 import IP from '../ip';
 const NoticeboardDetail = ({ route }) => {
     const { title, des } = route.params;
@@ -95,10 +95,11 @@ const NoticeboardDetail = ({ route }) => {
                                 />
                             )}
                         />
+                        <Divider></Divider>
                         {selectedPrograms.includes(program.program) && (
                             <View>
                                 {program.semesters.map((semester) => (
-                                    <View key={semester.no}>
+                                    <View key={semester.no} style={{ marginLeft: 30 }}>
                                         <List.Item
                                             title={`Semester ${semester.no}`}
                                             left={() => (
@@ -109,8 +110,9 @@ const NoticeboardDetail = ({ route }) => {
                                                 />
                                             )}
                                         />
+                                        <Divider></Divider>
                                         {selectedSemesters.includes(`${program.program}-${semester.no}`) && (
-                                            <View>
+                                            <View style={{ marginLeft: 30 }}>
                                                 {semester.sections.map((section) => (
                                                     <List.Item
                                                         key={section}
@@ -124,7 +126,9 @@ const NoticeboardDetail = ({ route }) => {
                                                             />
                                                         )}
                                                     />
+
                                                 ))}
+
                                             </View>
                                         )}
                                     </View>
