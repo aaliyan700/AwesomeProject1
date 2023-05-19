@@ -52,6 +52,7 @@ import UploadFine from './screen/Student/UploadFine';
 import ParentDashboard from './screen/Parent/ParentDashboard';
 import AddNoticeboard from './screen/Admin/AddNoticeboard';
 import NoticeboardDetail from './screen/Admin/NoticeboardDetail';
+import ViewNoticeboard from './screen/Student/ViewNoticeboard';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -535,6 +536,16 @@ const App = () => {
                 <Stack.Screen
                     name="NoticeboardDetail"
                     component={NoticeboardDetail}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewNoticeboard"
+                    component={ViewNoticeboard}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {

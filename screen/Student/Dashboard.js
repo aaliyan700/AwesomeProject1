@@ -135,6 +135,7 @@ const Dashboard = ({ navigation, route }) => {
                                 onDismiss={closeMenu}
                                 anchor={<Appbar.Action icon={appbarIcon} onPress={openMenu} />}>
                                 <Menu.Item title="View Profile" />
+                                <Menu.Item title="Noticeboard" onPress={() => navigation.navigate("ViewNoticeboard")} />
                                 <Menu.Item title="Logout" onPress={() => logout()} />
                                 <Divider />
                             </Menu>

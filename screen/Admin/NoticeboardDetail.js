@@ -4,6 +4,7 @@ import { List } from 'react-native-paper';
 import CheckBox from '@react-native-community/checkbox';
 import { Button, Divider } from 'react-native-paper';
 import IP from '../ip';
+import { calendarFormat } from 'moment';
 const NoticeboardDetail = ({ route }) => {
     const { title, des } = route.params;
     console.log(title, des);
@@ -39,18 +40,36 @@ const NoticeboardDetail = ({ route }) => {
             ...selectedSemesters.map((semester) => semester.split('-')[1]),
             ...selectedSections.map((section) => section.split('-')[2]),
         ];
+        const pr = [...selectedPrograms]
+        const sm = [...selectedSemesters.map((semester) => semester.split('-')[1])]
+        const sc = [...selectedSections.map((section) => section.split('-')[2])]
+        ///console.log(selectedCheckboxes)
+        const programs = pr;
+        const semesters = sm;
+        const sections = sc;
+
+        const objArray = [];
+        for (let i = 0; i < sections; i++) {
+            const section = sections[i];
+
+            const obj = { program, semester, section };
+            objArray.push(obj);
+        }
+
+        console.log("...", objArray);
         const noticeBoardData = {
             n: {
                 title: title,
                 description: des
             },
+            // slist: slist
             slist: [{
                 section: 'A',
-                semester: 6,
+                semester: 7,
                 program: 'CS'
             }]
         }
-        console.log(noticeBoardData);
+        //console.log(noticeBoardData);
         const response = await fetch(
             `http://${IP}/StudentPortal/api/admin/AddNoticeBoard`, {
             method: 'POST',

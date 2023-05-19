@@ -42,6 +42,7 @@ const StudentFeeStatus = ({ navigation, route }) => {
             );
             alert("Approved");
             setStatus(true);
+            await getFeeStatus();
             () => navigation.navigate("StudentList")
         } catch (err) {
             console.log(err);
@@ -56,6 +57,7 @@ const StudentFeeStatus = ({ navigation, route }) => {
             );
             alert("Rejected");
             setStatus(true);
+            await getFeeStatus();
             () => navigation.navigate("StudentList")
         } catch (err) {
             console.log(err);

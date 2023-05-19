@@ -28,6 +28,7 @@ const ViewContests = ({ navigation }) => {
             );
             alert("Accepted");
             ToastAndroid.show("Accepted", ToastAndroid.TOP);
+            await getContestHandler();
         } catch (err) {
             alert(ex.message);
         }
@@ -41,6 +42,8 @@ const ViewContests = ({ navigation }) => {
             );
             alert("Rejected");
             ToastAndroid.show("Accepted", ToastAndroid.TOP);
+            await getContestHandler();
+
         } catch (err) {
             alert(ex.message);
         }

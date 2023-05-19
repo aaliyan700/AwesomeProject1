@@ -10,6 +10,7 @@ import { clearTextOnFocus } from 'deprecated-react-native-prop-types/DeprecatedT
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const MarkAttendance = ({ navigation, route }) => {
+    const [selectedImages, setSelectedImages] = useState([]);
     const [selectedValue, setSelectedValue] = useState("java");
     const { item, courses } = route.params;
     const [courseCode, setCourseCode] = useState(item.course_code);
@@ -21,7 +22,7 @@ const MarkAttendance = ({ navigation, route }) => {
     const [selectedProgram, setSelectedProgram] = useState('asfasd')
     const [teacherCourses] = route.params.courses;
     const [isSelected, setSelection] = useState(true);
-    const [type, setType] = useState('class');
+    const [type, setType] = useState('All');
     const [alist, setAlist] = useState([]);
     const [imageData, setImageData] = useState({});
     const [limit, setLimit] = useState(0);
@@ -262,6 +263,7 @@ const MarkAttendance = ({ navigation, route }) => {
                     <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
                         onPress={() => send()}
                     >Mark</Button>
+
                 </View >
             </ScrollView>
         </Provider>

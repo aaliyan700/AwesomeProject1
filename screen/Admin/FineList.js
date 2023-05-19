@@ -32,6 +32,7 @@ const FineList = ({ navigation }) => {
             }
             );
             Alert.alert("Approve Fine", "Yes your fine is approved");
+            await GetStudents();
         } catch (err) {
             console.log(err);
         }
@@ -44,6 +45,7 @@ const FineList = ({ navigation }) => {
             }
             );
             Alert.alert("Reject Fine", "sorry your fine is Rejected");
+            await GetStudents();
         } catch (err) {
             console.log(err);
         }
