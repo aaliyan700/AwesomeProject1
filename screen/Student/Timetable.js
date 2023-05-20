@@ -88,7 +88,7 @@ const Timetable = ({ navigation }) => {
                     return (
                         <View key={index} style={styles.container}>
                             <Text style={{ fontSize: 18, color: 'black', marginBottom: 10, marginTop: 20, marginHorizontal: 20 }}>{items}</Text>
-                            <View style={{ elevation: 4, marginHorizontal: 9, borderRadius: 10, backgroundColor: '#77dd77', opacity: 0.7 }}>
+                            <View style={{ elevation: 4, marginHorizontal: 9, borderRadius: 10, backgroundColor: '#099e78', opacity: 0.7 }}>
                                 <View style={{ flexDirection: 'row', paddingHorizontal: 16, paddingVertical: 10 }}>
                                     <View style={{ flex: 8, marginLeft: 5, marginRight: 5, }}>
                                         <Text style={{ fontSize: 15, color: 'black', fontWeight: '700' }}>Course</Text>

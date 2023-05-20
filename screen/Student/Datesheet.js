@@ -203,13 +203,6 @@ const Datesheet = () => {
                 renderItem={({ item }) => (
                     <View style={styles.dayContainer}>
                         <View style={styles.tableContainer}>
-                            {/* <View style={styles.rowContainer}>
-                                <Text style={styles.cellHeader}>Course</Text>
-                                <Text style={styles.cellHeader}>Date</Text>
-                                <Text style={styles.cellHeader}>Day</Text>
-                                <Text style={styles.cellHeader}>Time</Text>
-                                <Text style={styles.cellHeader}>Time</Text>
-                            </View> */}
                             <View style={styles.rowContainer}>
                                 <Text style={styles.cell}>{item.courseName}</Text>
                                 <Text style={styles.cell}>{item.date}</Text>
@@ -242,6 +235,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 16,
+        backgroundColor: 'white'
     },
     dayContainer: {
         marginBottom: 1,
@@ -256,6 +250,8 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         borderRadius: 4,
         overflow: 'hidden',
+        backgroundColor: 'white',
+
     },
     rowContainer: {
         flexDirection: 'row',
@@ -269,6 +265,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#f2f2f2',
         fontWeight: 'bold',
+        color: "white",
+        backgroundColor: '#099e78',
     },
     cell: {
         flex: 1,
@@ -277,5 +275,40 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: '#ccc',
+        color: 'black'
     },
 })
+
+
+
+
+{/* <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, paddingHorizontal: 30 }}>
+                    <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 7, borderRadius: 10 }}>
+                        <Text style={{ margin: 10, color: 'black' }}>All</Text>
+                        <RadioButton value='all' label="all" />
+                        <Text style={{ margin: 10, color: 'black' }}>Paid</Text>
+                        <RadioButton value='true' label="true" />
+                        <Text style={{ margin: 10, color: 'black' }}>Pending</Text>
+                        <RadioButton value='asg' label="asg" />
+                    </View>
+                </View>
+            </RadioButton.Group> */}
+
+
+
+{/* {loading ? (
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size='large' color='#099e78' />
+                    <Text style={styles.loadingText}>Loading Students..</Text>
+                </View>
+            ) : (
+                <FlatList
+                    data={students}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    refreshControl={
+                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                    }
+                />
+            )} */}
