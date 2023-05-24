@@ -192,6 +192,7 @@ import {
     RefreshControl,
     TouchableOpacity,
     Alert,
+    Pressable
 } from 'react-native';
 import { FAB, Button, TextInput, RadioButton } from 'react-native-paper';
 import IP from '../ip';
@@ -257,14 +258,14 @@ const FineList = ({ navigation }) => {
             (checked === 'false' && !item.status)
         ) {
             return (
-                <View style={styles.mainDiv}>
+                <View style={styles.mainDiv} onPressIn={() => navigation.navigate("ViewFineDetail", { item })} >
                     <View>
                         <Text style={styles.fontDesign}>{item.reg_no}</Text>
                         <Text style={styles.fontDesign}>{item.name}</Text>
                         <Text style={styles.fontDesign}>B{item.program}{item.semester}{item.section}</Text>
-                        <Text style={styles.fontDesign}>{item.date}</Text>
+                        {/* <Text style={styles.fontDesign}>{item.date}</Text>
                         <Text style={styles.fontDesign}>{item.description}</Text>
-                        <Text style={styles.fontDesign}>{item.amount}</Text>
+                        <Text style={styles.fontDesign}>{item.amount}</Text> */}
                         {item.status ? (
                             <Text style={styles.fontDesign}>Paid</Text>
                         ) : (
@@ -278,6 +279,8 @@ const FineList = ({ navigation }) => {
                                 <Button mode='contained' style={styles.Btn}
                                     onPress={() => approveFine(item.id)}>Approve</Button>
                             )}
+                            <Button mode='contained' style={styles.Btn}
+                                onPress={() => navigation.navigate("ViewFineDetail", { item })}>View Detail</Button>
                         </View>
                     </View>
                     <View style={styles.subDiv}>

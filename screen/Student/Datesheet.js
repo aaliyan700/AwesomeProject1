@@ -187,6 +187,11 @@ const Datesheet = () => {
             </View>
         )
     }
+    const sortedDatesheetList = [...datesheetlist].sort((a, b) => {
+        const dateA = new Date(a.date.split("-").reverse().join("-"));
+        const dateB = new Date(b.date.split("-").reverse().join("-"));
+        return dateA - dateB;
+    });
     return (
         <View style={styles.container}>
             <View style={styles.tableContainer}>
@@ -197,7 +202,7 @@ const Datesheet = () => {
                     <Text style={styles.cellHeader}>Slot</Text>
                 </View>
             </View>
-            <FlatList
+            {/* <FlatList
                 data={datesheetlist}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
@@ -220,6 +225,25 @@ const Datesheet = () => {
 
 
                                 }
+                            </View>
+                        </View>
+                    </View>
+                )}
+            /> */}
+
+            <FlatList
+                data={sortedDatesheetList}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.dayContainer}>
+                        <View style={styles.tableContainer}>
+                            <View style={styles.rowContainer}>
+                                <Text style={styles.cell}>{item.courseName}</Text>
+                                <Text style={styles.cell}>{item.date}</Text>
+                                <Text style={styles.cell}>{item.time}</Text>
+                                <Text style={styles.cell}>
+                                    {item.time === "9:30 AM - 12:30 PM" ? "Morning" : "Evening"}
+                                </Text>
                             </View>
                         </View>
                     </View>
@@ -282,33 +306,3 @@ const styles = StyleSheet.create({
 
 
 
-{/* <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, paddingHorizontal: 30 }}>
-                    <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 7, borderRadius: 10 }}>
-                        <Text style={{ margin: 10, color: 'black' }}>All</Text>
-                        <RadioButton value='all' label="all" />
-                        <Text style={{ margin: 10, color: 'black' }}>Paid</Text>
-                        <RadioButton value='true' label="true" />
-                        <Text style={{ margin: 10, color: 'black' }}>Pending</Text>
-                        <RadioButton value='asg' label="asg" />
-                    </View>
-                </View>
-            </RadioButton.Group> */}
-
-
-
-{/* {loading ? (
-                <View style={styles.loadingContainer}>
-                    <ActivityIndicator size='large' color='#099e78' />
-                    <Text style={styles.loadingText}>Loading Students..</Text>
-                </View>
-            ) : (
-                <FlatList
-                    data={students}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    refreshControl={
-                        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                    }
-                />
-            )} */}

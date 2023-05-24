@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, Platform } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, Platform, TouchableOpacity, Alert, ToastAndroid } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { DataTable } from 'react-native-paper'
 import { RadioButton } from 'react-native-paper';
@@ -19,11 +19,13 @@ const Attendence = ({ navigation, route }) => {
     const [actionChecked, setActionChecked] = useState(false);
     const [absentList, setAbsentList] = useState([]);
     const [contestList, setContestList] = useState([]);
+    const [course, setCourse] = useState("");
     const filterAbsents = () => {
         console.log("Hi", item);
         console.log("Hi", item.enrollmentId);
         let enrollmentid = item.enrollmentId;
         let coursecode = item.courseCode;
+        setCourse(coursecode);
         let temp = [];
         item.detail.map((ele) => {
             if (ele.status === "A") {
@@ -66,8 +68,8 @@ const Attendence = ({ navigation, route }) => {
     };
     useEffect(() => {
         calculatePercentage();
-        console.log('absentList', absentList);
-    }, [absentList])
+        //console.log('absentList', absentList);
+    }, [])
 
     const GetAbsentList = async () => {
         try {
@@ -80,13 +82,46 @@ const Attendence = ({ navigation, route }) => {
             );
             console.log("Done")
             const data = await response.json();
-            console.log(data, "AbsentLists");
+            console.log("Get Absent List", data);
+            //console.log("get data", absentList);
             setContestList(data);
 
         } catch (err) {
             console.log(err);
         }
     }
+    const PostContest = async (id, c) => {
+        const foundObject = contestList.find(obj => obj.id === id);
+        let enrollmentId;
+        contestList?.map((i) => {
+            enrollmentId = i.enrollment_id;
+        })
+        let updatedContestList; // Updated variable name
+        if (foundObject) {
+            try {
+                updatedContestList = [{ // Assign the modified object to the new variable
+                    attendance_id: foundObject.id,
+                    enrollment_id: enrollmentId,
+                    course_code: course
+                }];
+                const response = await fetch(`http://${IP}/StudentPortal/api/Student/ContestAttendance`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(updatedContestList), // Use the updated variable here
+                });
+                ToastAndroid.show("Your contest request is done", ToastAndroid.LONG);
+            } catch (err) {
+                // Handle the error if it occurs
+            }
+        } else {
+            ToastAndroid.show("You cannot contest this attendance", ToastAndroid.BOTTOM);
+        }
+    };
+
+
     useEffect(() => {
         GetAbsentList();
     }, [])
@@ -114,13 +149,13 @@ const Attendence = ({ navigation, route }) => {
                     </RadioButton.Group>
                 </View>
             </View>
-            <Button style={{ margin: 10, backgroundColor: '#099e78', fontWeight: 'bold' }} color="black" mode="outlined" onPress={() => navigateList()}>Contest</Button>
+            {/* <Button style={{ margin: 10, backgroundColor: '#099e78', fontWeight: 'bold' }} color="black" mode="outlined" onPress={() => navigateList()}>Contest</Button> */}
             <View style={{ marginTop: 2, flexDirection: 'row', paddingHorizontal: 36, paddingVertical: 10, backgroundColor: '#77dd77', marginHorizontal: 15, borderRadius: 10, opacity: 0.7, elevation: 4 }}>
                 <View style={{ flex: 8, marginLeft: 5, marginRight: 5, }}>
-                    <Text style={{ fontSize: 13, color: 'black', fontWeight: '700' }}>Status</Text>
+                    <Text style={{ fontSize: 12, color: 'black', fontWeight: '700' }}>Status</Text>
                 </View>
                 <View style={{ flex: 8, marginLeft: 100, marginRight: 5 }}>
-                    <Text style={{ fontSize: 13, color: 'black', fontWeight: '700' }}>Date</Text>
+                    <Text style={{ fontSize: 12, color: 'black', fontWeight: '700' }}>Date</Text>
                 </View>
             </View>
             <ScrollView>
@@ -131,7 +166,7 @@ const Attendence = ({ navigation, route }) => {
                                 <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
                                     {
                                         val.status == "A" ?
-                                            <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                            <TouchableOpacity onLongPress={() => PostContest(val.aid, val.course_code)} style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
                                                 <View style={styles.box}>
 
                                                     <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
@@ -141,7 +176,7 @@ const Attendence = ({ navigation, route }) => {
                                                         <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
                                                     </View>
                                                 </View>
-                                            </View> :
+                                            </TouchableOpacity> :
                                             <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
                                                 <View style={styles.box}>
 
@@ -163,7 +198,7 @@ const Attendence = ({ navigation, route }) => {
                             <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
                                 {
                                     val.status == "A" ?
-                                        <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                        <TouchableOpacity onLongPress={() => PostContest(val.aid, val.course_code)} style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
                                             <View style={styles.box}>
 
                                                 <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
@@ -173,7 +208,7 @@ const Attendence = ({ navigation, route }) => {
                                                     <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
                                                 </View>
                                             </View>
-                                        </View> :
+                                        </TouchableOpacity> :
                                         <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
                                             <View style={styles.box}>
 
@@ -187,13 +222,12 @@ const Attendence = ({ navigation, route }) => {
                                         </View>
                                 }
                             </View>
-
                         }
                         else {
                             <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
                                 {
                                     val.status == "A" ?
-                                        <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                        <TouchableOpacity onLongPress={() => PostContest(val.aid, val.course_code)} style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
                                             <View style={styles.box}>
 
                                                 <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
@@ -203,7 +237,7 @@ const Attendence = ({ navigation, route }) => {
                                                     <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
                                                 </View>
                                             </View>
-                                        </View> :
+                                        </TouchableOpacity> :
                                         <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
                                             <View style={styles.box}>
 
@@ -228,7 +262,7 @@ const Attendence = ({ navigation, route }) => {
                                 <View key={index} style={{ paddingHorizontal: 10, marginHorizontal: 10, marginTop: 3 }}>
                                     {
                                         val.status == "A" ?
-                                            <View style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
+                                            <TouchableOpacity onLongPress={() => PostContest(val.aid, val.course_code)} style={{ backgroundColor: '#F98E8E', paddingHorizontal: 10, borderRadius: 5 }}>
                                                 <View style={styles.box}>
 
                                                     <View style={{ flex: 8, marginLeft: 15, marginRight: 5 }}>
@@ -238,7 +272,7 @@ const Attendence = ({ navigation, route }) => {
                                                         <Text style={{ fontSize: 13, color: 'black' }}>{val.date}</Text>
                                                     </View>
                                                 </View>
-                                            </View> :
+                                            </TouchableOpacity> :
                                             <View style={{ backgroundColor: '#099e78', paddingHorizontal: 10, borderRadius: 5 }}>
                                                 <View style={styles.box}>
 

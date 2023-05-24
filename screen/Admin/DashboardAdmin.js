@@ -7,23 +7,13 @@ import { FAB } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import IP from '../ip';
 import { FlatGrid } from 'react-native-super-grid'
-import MenuDrawer from 'react-native-side-drawer';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const DashboardAdmin = ({ navigation }) => {
     const [open, setOpen] = useState(false);
 
     const toggleOpen = () => {
         setOpen(!open);
     };
-
-    const drawerContent = () => {
-        return (
-            <TouchableOpacity onPress={toggleOpen} style={styles.animatedBox}>
-                <Text>Close</Text>
-            </TouchableOpacity>
-        );
-    };
-
-
     const [visible, setVisible] = useState(false);
     const [selectedValue, setSelectedValue] = useState("Fall2022");
     const showModal = () => setVisible(true);
@@ -74,14 +64,14 @@ const DashboardAdmin = ({ navigation }) => {
             icon: require("../images/download.png"),
             modal: 'none'
         },
+        {
+            title: "Course Advisor",
+            navigateScreen: "AddCourseAdvisor",
+            icon: require("../images/download.png"),
+            modal: 'none'
+        },
     ]
     const showItems = ({ item }) => {
-        // const handler = () => {
-        //     navigation.navigate(item.navigateScreen);
-        // };
-        // const handler = () => {
-        //     item.modal === 'none' ? navigation.navigate(item.navigateScreen) : item.modal === 'showModal' && console.log(item.showModal());
-        // };
         const handler = () => {
             if (item.modal !== 'none') {
                 // if the item has a modal, call the showModal function
@@ -91,7 +81,6 @@ const DashboardAdmin = ({ navigation }) => {
                 navigation.navigate(item.navigateScreen);
             }
         }
-
         return (
             <Pressable style={styles.boxes}
                 onPressIn={() => handler()}>
@@ -118,7 +107,7 @@ const DashboardAdmin = ({ navigation }) => {
                     anchor={<Appbar.Action icon={appbarIcon} onPress={openMenu} />}
                 >
                     <Menu.Item title="Assessment Settings" onPress={toggleOpen} />
-                    <Menu.Item title="Logout" />
+                    <Menu.Item title="Logout" onPress={() => navigation.navigate("LoginScreen")} />
                     <Divider />
                 </Menu>
             </Appbar.Header>
@@ -142,7 +131,8 @@ const DashboardAdmin = ({ navigation }) => {
                                 style={{ color: 'black', backgroundColor: 'white' }}
                                 onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
                             >
-                                <Picker.Item label="Fall2022" value="Fall2022" />
+                                <Picker.Item label="Select Session" value="Select Session" />
+                                <Picker.Item label="Fall2020" value="Fall2020" />
                                 <Picker.Item label="Spring2022" value="Spring2022" />
                                 <Picker.Item label="Fall2023" value="Fall2023" />
                                 <Picker.Item label="Spring2023" value="Spring2023" />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator, FlatList, ScrollView, RefreshControl, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
 import { Button } from 'react-native-paper';
@@ -71,11 +71,23 @@ const StudentFeeStatus = ({ navigation, route }) => {
                 <Text style={styles.fontStyle}>Amount:{item.amount}</Text>
                 <Text style={styles.fontStyle}>Expiry Date:{item.expiry_date}</Text>
                 <Text style={styles.fontStyle}>Issue Date:{item.issue_date}</Text>
-                {item.status ? (
-                    <Button mode="contained" style={styles.btn1} onPress={() => rejectFee(item.id)}>Reject</Button>
-                ) : (
-                    <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
-                )}
+                <View style={{ marginHorizontal: 30 }}>
+                    {
+                        item.challan_image ? (
+                            <Image source={{ uri: `http://${IP}/StudentPortal/ChallanImages/${item.challan_image}` }} style={{ alignSelf: 'center', height: 200, width: 300, resizeMode: 'contain' }} />
+                        ) :
+                            (
+                                <Text>Not Uploaded Yet...</Text>
+                            )
+                    }
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                    {item.status ? (
+                        <Button mode="contained" style={styles.btn1} onPress={() => rejectFee(item.id)}>Reject</Button>
+                    ) : (
+                        <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
+                    )}
+                </View>
                 {/* <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
                 <Button mode="contained" style={styles.btn1} onPress={() => rejectFee(item.id)}>Reject</Button> */}
             </View>
@@ -124,14 +136,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         padding: 10,
         margin: 10,
-        alignItems: 'center',
+        //alignItems: 'center',
         elevation: 7,
         borderRadius: 10,
     },
     fontStyle:
     {
         color: 'black',
-        fontSize: 15
+        fontSize: 15,
+        textAlign: 'left'
     },
     btn:
     {

@@ -40,37 +40,32 @@ const NoticeboardDetail = ({ route }) => {
             ...selectedSemesters.map((semester) => semester.split('-')[1]),
             ...selectedSections.map((section) => section.split('-')[2]),
         ];
-        const pr = [...selectedPrograms]
-        const sm = [...selectedSemesters.map((semester) => semester.split('-')[1])]
-        const sc = [...selectedSections.map((section) => section.split('-')[2])]
-        ///console.log(selectedCheckboxes)
-        const programs = pr;
-        const semesters = sm;
-        const sections = sc;
-
-        const objArray = [];
-        for (let i = 0; i < sections; i++) {
-            const section = sections[i];
-
-            const obj = { program, semester, section };
-            objArray.push(obj);
-        }
-
-        console.log("...", objArray);
         const noticeBoardData = {
             n: {
                 title: title,
                 description: des
             },
-            // slist: slist
-            slist: [{
-                section: 'A',
-                semester: 7,
-                program: 'CS'
-            }]
-        }
-        //console.log(noticeBoardData);
-        const response = await fetch(
+            slist: []
+        };
+
+        selectedPrograms.forEach((program) => {
+            selectedSemesters.forEach((semesterValue) => {
+                //const filteredSection = selectedSections.filter((sectionValue) => sectionValue.startsWith(`${program}-${semesterValue}`));
+                const filteredSection = selectedSections
+                console.log(filteredSection, "///")
+                noticeBoardData.slist.push({
+                    section: filteredSection.map((sectionValue) => sectionValue.split('-')[2]),
+                    semester: parseInt(semesterValue.split('-')[1]),
+                    program: program
+                });
+                console.log("<<<<<<??", noticeBoardData.slist);
+            });
+        });
+        console.log(noticeBoardData);
+        noticeBoardData.slist.map((i) => {
+            console.log("i", i.section)
+        })
+        response = await fetch(
             `http://${IP}/StudentPortal/api/admin/AddNoticeBoard`, {
             method: 'POST',
             headers: {

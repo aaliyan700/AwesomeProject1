@@ -53,6 +53,11 @@ import ParentDashboard from './screen/Parent/ParentDashboard';
 import AddNoticeboard from './screen/Admin/AddNoticeboard';
 import NoticeboardDetail from './screen/Admin/NoticeboardDetail';
 import ViewNoticeboard from './screen/Student/ViewNoticeboard';
+import ViewFineDetail from './screen/Admin/ViewFineDetail';
+import AddCourseAdvisor from './screen/Admin/AddCourseAdvisor';
+import CourseAdvisor from './screen/Teacher/CourseAdvisor';
+import CourseAdvisorInformation from './screen/Teacher/CourseAdvisorInformation';
+import ViewAdvise from './screen/Student/ViewAdvise';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -546,6 +551,54 @@ const App = () => {
                 <Stack.Screen
                     name="ViewNoticeboard"
                     component={ViewNoticeboard}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewFineDetail"
+                    component={ViewFineDetail}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="AddCourseAdvisor"
+                    component={AddCourseAdvisor}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="CourseAdvisor"
+                    component={CourseAdvisor}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="CourseAdvisorInformation"
+                    component={CourseAdvisorInformation}
+                    options={{
+                        headerShown: false
+                    }}
+
+                />
+                <Stack.Screen
+                    name="ViewAdvise"
+                    component={ViewAdvise}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {

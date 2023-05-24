@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image, Pressable } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatGrid } from 'react-native-super-grid'
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import IP from '../ip';
+import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
 const TeacherDashboard = ({ navigation }) => {
     const record = [
         {
@@ -14,11 +17,56 @@ const TeacherDashboard = ({ navigation }) => {
             navigateScreen: "EvaluationTeacher",
             icon: require("../images/timetable.png")
         },
+        {
+            title: "Course Advisor",
+            navigateScreen: "CourseAdvisor",
+            icon: require("../images/timetable.png")
+        },
     ]
+    const [userData, setUserData] = useState({});
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
+    const [visible, setVisible] = React.useState(false);
+    const appbarIcon = ({ size }) => {
+        return <Icon name="menu" size={30} color='#fff' />; //just an example but doesn't matter waht you put here, real icon or anything it will rotate
+    }
+
+    const GetUser = async (username) => {
+        const user_name = await AsyncStorage.getItem('username');
+        console.log("username", user_name);
+        let role = 'teacher';
+        console.log("role", role);
+        try {
+            const query = `http://${IP}/StudentPortal/api/Login/GetUser?username=${user_name}&role=${role}`
+            console.log(query)
+            const response = await fetch(
+                query, {
+                method: 'GET',
+            }
+            );
+            console.log("Done")
+            const data = await response.json();
+            setUserData(data);
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+    useEffect(() => {
+        GetUser();
+    }, [])
+    const logout = async () => {
+        const user_name = await AsyncStorage.getItem('username');
+        console.log(user_name);
+        await AsyncStorage.removeItem('user_name');
+        navigation.navigate("LoginScreen");
+        //navigation.navigate("LoginScreen");
+    };
     const showItems = ({ item }) => {
         const handler = () => {
             navigation.navigate(item.navigateScreen);
         };
+
         return (
             <View>
                 <Pressable style={styles.boxes}
@@ -34,34 +82,45 @@ const TeacherDashboard = ({ navigation }) => {
             </View>
         )
     }
-    return (
-        <View style={styles.conatiner}>
-            <View style={styles.header}>
-                <View style={{ flexDirection: 'column', marginTop: 10 }}>
-                    <Text style={styles.headerFont}>Dashboard</Text>
-                    <Text style={styles.header2Font}>Welcome Mr.Shabbir</Text>
-                </View>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
-                    <Icon name="notifications" size={30} color='#fff' />
-                    {/* <TouchableOpacity
+    return (<>
+        <Provider>
+            <View style={styles.conatiner}>
+                <View style={styles.header}>
+                    <View style={{ flexDirection: 'column' }}>
+                        <Menu
+                            visible={visible}
+                            onDismiss={closeMenu}
+                            anchor={<Appbar.Action icon={appbarIcon} onPress={openMenu} />}>
+                            <Menu.Item title="View Profile" />
+                            <Menu.Item title="Logout" onPress={logout} />
+                            <Divider />
+                        </Menu>
+                        <Text style={styles.headerFont}>Dashboard</Text>
+                        <Text style={styles.header2Font}>Welcome ,{userData.first_name}</Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
+                        <Icon name="notifications" size={30} color='#fff' />
+                        {/* <TouchableOpacity
                         onPress={() => navigation.navigate('Notification')}>
                         <Image source={require('../images/notification.png')} style={{ marginRight: 10, alignSelf: 'center', height: 30, width: 30, resizeMode: 'contain' }} />
                     </TouchableOpacity> */}
-                    <TouchableOpacity>
-                        <Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} />
-                    </TouchableOpacity>
+                        <TouchableOpacity>
+                            <Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-            <View style={{ flex: 5, backgroundColor: '#099e78' }}>
-                <View style={{ flex: 1, borderTopRightRadius: 20, borderTopLeftRadius: 20, backgroundColor: '#f2f0f5' }}>
-                    <FlatGrid
-                        itemDimension={130}
-                        data={record}
-                        renderItem={showItems}>
-                    </FlatGrid>
+                <View style={{ flex: 5, backgroundColor: '#099e78' }}>
+                    <View style={{ flex: 1, borderTopRightRadius: 20, borderTopLeftRadius: 20, backgroundColor: '#f2f0f5' }}>
+                        <FlatGrid
+                            itemDimension={130}
+                            data={record}
+                            renderItem={showItems}>
+                        </FlatGrid>
+                    </View>
                 </View>
-            </View>
-        </View >
+            </View >
+        </Provider>
+    </>
     )
 }
 export default TeacherDashboard;
@@ -84,15 +143,15 @@ const styles = StyleSheet.create({
     },
     headerFont:
     {
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: 'bold',
         color: 'white',
-        fontFamily: 'cursive'
+        fontFamily: 'fantasy'
     },
     header2Font:
     {
-        fontFamily: 'cursive',
-        fontSize: 18,
+        fontFamily: 'fantasy',
+        fontSize: 16,
         color: 'white'
     },
 })

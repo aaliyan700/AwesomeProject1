@@ -11,6 +11,7 @@ const Dashboard = ({ navigation, route }) => {
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
     const [userInfo, setUserInfo] = useState({});
+    const [userData, setUserData] = useState({});
     const logout = async () => {
         await AsyncStorage.removeItem('username');
         console.log(username);
@@ -23,7 +24,7 @@ const Dashboard = ({ navigation, route }) => {
         try {
             const data = await AsyncStorage.getItem('data'); // Retrieve data from AsyncStorage using the key
             if (data) {
-                console.log('Data retrieved from AsyncStorage:', JSON.parse(data));
+                //console.log('Data retrieved from AsyncStorage:', JSON.parse(data));
                 setUserInfo(JSON.parse(data));
                 // Do something with the retrieved data
             } else {
@@ -44,11 +45,33 @@ const Dashboard = ({ navigation, route }) => {
     };
     useEffect(() => {
         check();
+        GetUser();
     }, [])
     const check = async () => {
         const user_name = await AsyncStorage.getItem('username');
         setUsername(user_name);
         console.log(username);
+    }
+    const GetUser = async (username) => {
+        const user_name = await AsyncStorage.getItem('username');
+        console.log("username", user_name);
+        let role = 'student';
+        console.log("role", role);
+        try {
+            const query = `http://${IP}/StudentPortal/api/Login/GetUser?username=${user_name}&role=${role}`
+            console.log(query)
+            const response = await fetch(
+                query, {
+                method: 'GET',
+            }
+            );
+            console.log("Done")
+            const data = await response.json();
+            setUserData(data);
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
     }
     const record = [
         {
@@ -111,34 +134,31 @@ const Dashboard = ({ navigation, route }) => {
             <Provider>
                 <View style={styles.conatiner}>
                     <View style={styles.header}>
-                        <View style={{ flexDirection: 'column', marginTop: 10 }}>
-                            <Text style={styles.headerFont}>Dashboard</Text>
-                            <Text style={styles.header2Font}>Welcome ,{userInfo.first_name}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
-                            {/* <TouchableOpacity
-                                onPress={() => navigation.navigate('Notification')}>
-                                <Image source={require('../images/notification.png')} style={{ marginRight: 10, alignSelf: 'center', height: 30, width: 30, resizeMode: 'contain' }} />
-                            </TouchableOpacity> */}
-                            <Icon name="notifications" size={30} color='#fff' />
-                            <TouchableOpacity>
-
-                                {
-                                    userInfo.profile_photo ? (<Image source={{ uri: imageUri }} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain', borderRadius: 20 }}></Image>) :
-                                        (<Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} />)
-                                }
-
-                                {/* <Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} /> */}
-                            </TouchableOpacity>
+                        <View style={{ flexDirection: 'column' }}>
                             <Menu
                                 visible={visible}
                                 onDismiss={closeMenu}
                                 anchor={<Appbar.Action icon={appbarIcon} onPress={openMenu} />}>
                                 <Menu.Item title="View Profile" />
+                                <Menu.Item title="CourseAdvisor" onPress={() => navigation.navigate("ViewAdvise")} />
                                 <Menu.Item title="Noticeboard" onPress={() => navigation.navigate("ViewNoticeboard")} />
                                 <Menu.Item title="Logout" onPress={() => logout()} />
                                 <Divider />
                             </Menu>
+                            <Text style={styles.headerFont}>Dashboard</Text>
+                            <Text style={styles.header2Font}>Welcome ,{userData.first_name}</Text>
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 15 }}>
+                            <Icon name="notifications" size={30} color='#fff' />
+                            <TouchableOpacity>
+
+                                {
+                                    userData.profile_photo ? (<Image source={{ uri: imageUri }} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain', borderRadius: 20 }}></Image>) :
+                                        (<Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} />)
+                                }
+
+                                {/* <Image source={require('../images/avatar-icon.png')} style={{ alignSelf: 'center', height: 35, width: 50, resizeMode: 'contain' }} /> */}
+                            </TouchableOpacity>
                         </View>
                     </View>
                     <View style={{ flex: 3, backgroundColor: '#099e78' }}>
@@ -177,14 +197,16 @@ const styles = StyleSheet.create({
     headerFont:
     {
         fontSize: 22,
-        fontWeight: 'bold',
-        fontFamily: 'cursive',
-        color: 'white'
+        fontFamily: 'fantasy',
+        color: 'white',
+        marginTop: 5,
+        fontWeight: '700',
+        marginTop: 10
     },
     header2Font:
     {
         fontSize: 18,
-        fontFamily: 'cursive',
+        fontFamily: 'fantasy',
         color: 'white'
     },
 

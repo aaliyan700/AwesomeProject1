@@ -74,8 +74,8 @@ const AsgDetails = ({ navigation }) => {
             <Pressable style={styles.boxes}
                 onPressIn={() => handler()}>
                 <View>
-                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 15, color: 'black', fontFamily: 'cursive' }}>{item.courseCode}</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', color: 'black', fontFamily: 'cursive' }}>{item.courseName}</Text>
+                    <Text style={{ textAlign: 'center', color: 'black', fontSize: 15, color: 'black', fontFamily: 'fantasy' }}>{item.courseCode}</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 15, color: 'black', color: 'black', fontFamily: 'fantasy' }}>{item.courseName}</Text>
                 </View>
             </Pressable>
         )
@@ -96,7 +96,6 @@ export default AsgDetails
 const styles = StyleSheet.create({
     container:
     {
-
         flex: 1,
         backgroundColor: 'white'
     },
@@ -105,8 +104,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         padding: 20,
         backgroundColor: 'white',
-        elevation: 4,
-        opacity: 0.7
+        elevation: 7,
     },
     box:
     {

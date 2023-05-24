@@ -118,7 +118,7 @@ const FeeChallan = ({ route, navigation }) => {
     useEffect(() => {
         console.log(generateInstallments(totalAmount, 3));
     }, [])
-    const uri = `http://192.168.43.65/StudentPortal/ChallanFiles/${pdf}`;
+    const uri = `${IP}/StudentPortal/ChallanFiles/${pdf}`;
     console.log(uri);
     return (
         <View style={styles.container}>

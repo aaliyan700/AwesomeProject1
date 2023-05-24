@@ -23,8 +23,8 @@ const GradeStudent = ({ navigation, route }) => {
     const [open, setOpen] = useState(false);
     const [type, setType] = useState('class');
     const [alist, setAlist] = useState([]);
-    const [totalMarks, setTotalMarks] = useState(0);
-    const [obtMarks, setObtMarks] = useState();
+    const [totalMarks, setTotalMarks] = useState("");
+    const [obtMarks, setObtMarks] = useState("");
     const [title, setTitle] = useState('');
     // const [marksList, setMarks] = useState([]);
     // const [sessionalList, setSessional] = useState([]);
