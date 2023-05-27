@@ -32,9 +32,9 @@ const CourseAdvisor = ({ navigation }) => {
                 studentList[0]?.sList?.map((item, index) => {
                     return (
                         <Pressable onPressIn={() => navigation.navigate("CourseAdvisorInformation", { studentList, item })} style={styles.subContainer} key={index}>
-                            <Text style={styles.font}>Name:     {item.student_name}</Text>
-                            <Text style={styles.font}>Reg No:   {item.reg_no}</Text>
-                            <Text style={styles.font}>Cgpa:      {item.cgpa}</Text>
+                            <Text style={styles.font}>{item.student_name}</Text>
+                            <Text style={styles.font1}>{item.reg_no}</Text>
+                            <Text style={styles.font1}>{item.cgpa}</Text>
                         </Pressable>
                     )
                 })
@@ -54,14 +54,21 @@ const styles = StyleSheet.create({
     subContainer:
     {
         backgroundColor: 'white',
-        marginHorizontal: 10,
+        marginHorizontal: 20,
         marginVertical: 10,
-        padding: 10,
-        borderRadius: 10,
-        elevation: 9
+        borderRadius: 5,
+        padding: 16,
+        elevation: 3
     },
     font:
     {
+        fontSize: 17,
+        color: 'black',
+        fontWeight: '500'
+    },
+    font1:
+    {
+        fontSize: 15,
         color: 'black'
     }
 })

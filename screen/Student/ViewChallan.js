@@ -8,7 +8,6 @@ import IP from '../ip';
 import { Button } from 'react-native-paper';
 const ViewChallan = () => {
     const [pdf, setPdf] = useState('');
-
     const GetChallan = async () => {
         console.log('fetching...');
         const reg_no = await AsyncStorage.getItem('username');
@@ -21,6 +20,7 @@ const ViewChallan = () => {
             });
             console.log('Done');
             const data = await response.json();
+            console.log("data", data);
             setPdf(data);
             console.log('Challan', data);
         } catch (error) {
@@ -66,11 +66,9 @@ const ViewChallan = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
     },
     pdfView: {
         flex: 1,
-        backgroundColor: 'white'
     },
     btn:
     {
@@ -79,6 +77,5 @@ const styles = StyleSheet.create({
         margin: 20
     }
 });
-
 export default ViewChallan;
 

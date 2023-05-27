@@ -7,7 +7,8 @@ import {
 } from 'react-native';
 import IP from '../ip';
 import DocumentPicker from 'react-native-document-picker';
-const CourseAllocation = () => {
+
+const AddPeerEvaluation = () => {
     const [singleFile, setSingleFile] = useState({});
     const uploadImage = async () => {
         // Check if any file is selected or not
@@ -15,22 +16,22 @@ const CourseAllocation = () => {
         if (singleFile != null) {
             // If file selected then create FormData
             const data = new FormData();
-            data.append('name', 'Image Upload');
-            data.append('courseallocationfile', {
-                uri: 'content://com.android.externalstorage.documents/document/primary%3Acourse%20allocation.xlsx',
-                name: 'courseallocation.xlsx',
+            data.append('peerevaluationfile', {
+                uri: 'content://com.android.externalstorage.documents/document/primary%3Apeerevaluationfile%20(1).xlsx',
+                name: 'peerevaluationfile (1).xlsx',
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             });
             console.log(singleFile);
             let res = await fetch(
-                `http://${IP}/StudentPortal/api/Admin/AddCourseAllocation`,
+                `http://${IP}/StudentPortal/api/Admin/AddPeerEvaluationTeachers`,
                 {
                     method: 'post',
                     body: data,
                 }
             );
-            alert("Allocated");
-
+            // let responseJson = await res.json();
+            // console.log(responseJson);
+            alert("uploaded");
         } else {
 
             alert('Please Select File first');
@@ -62,12 +63,11 @@ const CourseAllocation = () => {
         <View style={styles.mainBody}>
             <View style={{ alignItems: 'center' }}>
                 <Text style={{ fontSize: 30, textAlign: 'center', color: 'black' }}>
-                    Upload Allocations
+                    Upload Add Evaluation File
                 </Text>
 
             </View>
             {/*Showing the data of selected Single file*/}
-
             <TouchableOpacity
                 style={styles.buttonStyle}
                 activeOpacity={0.5}
@@ -118,4 +118,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default CourseAllocation;
+export default AddPeerEvaluation;

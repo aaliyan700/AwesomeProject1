@@ -30,6 +30,34 @@ const FeeDetails = ({ navigation }) => {
         Alert.alert('Challan Generated', 'Your challan has been generated');
     }
     const [totalFee, setTotalFee] = useState(0);
+    const renderButton = () => {
+        if (feeInfo.status === "pending") {
+            return (
+                <Button mode="contained" style={styles.btn1} onPress={() => navigation.navigate("FeeChallan", { feeInfo })}>
+                    Generate Challan
+                </Button>
+            );
+        } else if (feeInfo.status === "requested") {
+            return (
+                <Button mode="contained" style={styles.btn1}>
+                    Requested
+                </Button>
+            );
+        } else if (feeInfo.status === "generated") {
+            return (
+                <View>
+                    <Button mode="contained" style={styles.btn1} onPress={() => navigation.navigate("ViewFeeStatus")}>
+                        View Fee Status
+                    </Button>
+                    <Button mode="contained" style={styles.btn1} onPress={() => navigation.navigate("ViewChallan")}>
+                        View Challan
+                    </Button>
+                </View>
+
+            );
+        }
+    };
+
     return (
         <View style={styles.container}>
             <View style={{ flexDirection: 'column', alignItems: 'center', backgroundColor: 'red', padding: 50, borderRadius: 10, marginHorizontal: 10, marginVertical: 10, backgroundColor: '#099e78', elevation: 7 }}>
@@ -50,20 +78,13 @@ const FeeDetails = ({ navigation }) => {
                     <Text style={{ fontSize: 15, color: 'white' }}>{feeInfo.otherFee}</Text>
                 </View>
             </View>
-            {/* <View style={styles.containerDesign}>
-                <Text style={styles.containerFont}>Enrolled Courses: {feeInfo.enrolledCoursesCount}</Text>
-                <Text style={styles.containerFont}>Semester Fee: {feeInfo.semesterFee}</Text>
-                <Text style={styles.containerFont}>Admission Fee: {feeInfo.admissionFee}</Text>
-                <Text style={styles.containerFont}>Extra Course Fee: {feeInfo.extraCourseFee}</Text>
-                <Text style={styles.containerFont}>Other Fee: {feeInfo.otherFee}</Text>
-                <Text style={styles.containerFont}>Total Fee:{totalFee}</Text>
-            </View> */}
-            {!feeInfo.isChallanGenerated && (
+            {/* {!feeInfo.isChallanGenerated && (
                 <Button title="Generate Challan" onPress={generateChallan} />
-            )}
+            )} */}
             <View style={styles.btnDesign}>
-                <Button mode='contained' style={styles.btn1} onPress={() => navigation.navigate("ViewFeeStatus")}>View Fee Status</Button>
-                <Button mode='contained' style={styles.btn1} onPress={() => navigation.navigate("FeeChallan", { feeInfo })}>Generate Challan</Button>
+                {/* <Button mode='contained' style={styles.btn1} onPress={() => navigation.navigate("ViewFeeStatus")}>View Fee Status</Button>
+                <Button mode='contained' style={styles.btn1} onPress={() => navigation.navigate("FeeChallan", { feeInfo })}>Generate Challan</Button> */}
+                <>{renderButton()}</>
             </View>
         </View>
     )
@@ -117,7 +138,7 @@ const styles = StyleSheet.create({
     },
     box: {
         flex: 1,
-        backgroundColor: 'pink',
+        backgroundColor: '#B8D696',
         height: 100,
         margin: 1,
         alignItems: 'center',

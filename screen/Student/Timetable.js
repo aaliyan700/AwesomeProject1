@@ -171,7 +171,9 @@ const Timetable = () => {
     const today = new Date();
     const [day, setDay] = useState([]);
     const [weekkly, setWeeklyTimetable] = useState([])
-    console.log(weekkly, 'weekkly')
+    const [loading, setLoading] = useState(true);
+    const [todayTime, setToday] = useState([])
+    //console.log(weekkly, 'weekkly')
     //     const timetableHandler = async () => {
     const GetTimeTable = async () => {
         console.log("fetching...")
@@ -187,28 +189,35 @@ const Timetable = () => {
             );
             console.log("Done")
             const data = await response.json();
-            setWeeklyTimetable(data);
-            console.log(data);
-            // setLoading(false);
+            const currentDay = new Date().toLocaleDateString("en-US", { weekday: "long" });
+            const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+            const sortedData = data.sort((a, b) => {
+                if (a.day === currentDay) return -1; // Place current day on top
+                if (b.day === currentDay) return 1; // Place current day on top
+                return daysOfWeek.indexOf(a.day) - daysOfWeek.indexOf(b.day);
+            });
+            const currentDayObject = sortedData.find((item) => item.day === currentDay.split(',')[0]);
+            const filteredData = sortedData.filter((item) => item.day !== currentDay.split(',')[0]);
+            console.log("filtered data", filteredData);
+            console.log("current day object", currentDayObject);
+            const transformedData = [currentDayObject]
+            console.log("today", transformedData);
+            setToday(transformedData);
+            setWeeklyTimetable(filteredData);
+            setLoading(false);
             let day = [];
             data?.map((time) => {
                 return day.push(time.day);
             });
             let uniqueChars = [...new Set(day)];
             setDay(uniqueChars);
-            let date = new Date();
-            let d = date.toLocaleString('en-us', { weekday: 'long' }).split(',')[0];
-            console.log(d)
+
             //setToday(d);
-            data.map(ele => {
-                if (ele.day == d) {
-                    console.log('TODAY IF')
-                    //setTodayTimetable(ele);
-                }
-            })
+
         } catch (error) {
             console.error("Error:", error);
-            //setLoading(false);
+            setLoading(false);
         }
     };
     useEffect(() => {
@@ -219,6 +228,25 @@ const Timetable = () => {
     return (
         <ScrollView>
             <View style={styles.container}>
+                <View style={{ marginTop: 30 }}>
+                    <View style={styles.bgSiteTable}>
+                        {todayTime?.map((item, index) => (
+                            <View style={{ padding: 10 }} key={index}>
+                                {/* <Text style={styles.dayName}>{item?.day}</Text> */}
+                                <Text style={styles.dayName}>{item?.day ? item.day : 'No Class Today'}</Text>
+                                <Divider style={{ backgroundColor: 'black', marginHorizontal: 10 }}></Divider>
+                                {item?.detail.map((detailItem, index) => (
+                                    <View key={index} style={{ flexDirection: 'row', padding: 16, marginLeft: 30 }}>
+
+                                        <Text style={{ flex: 2 }} >{detailItem.course}</Text>
+                                        <Text style={{ flex: 2 }} >{detailItem.venue}</Text>
+                                        <Text style={{ flex: 2 }} >{detailItem.time}</Text>
+                                    </View>
+                                ))}
+                            </View>
+                        ))}
+                    </View>
+                </View>
                 {weekkly.map((dayData, index) => {
                     const dayname = dayData.day;
                     const dayIndex = weekday.findIndex((day) => day === dayname);
@@ -234,17 +262,17 @@ const Timetable = () => {
                             >
                                 <Text style={styles.dayName}>{dayname}</Text>
                                 <Divider style={{ backgroundColor: 'black', marginHorizontal: 10 }}></Divider>
-                                <View style={{ marginTop: 2, backgroundColor: 'white', elevation: 9, borderRadius: 10 }}>
+                                <View style={{ marginTop: 2 }}>
                                     <View>
                                         {dayData?.detail.map((details, index) => (
 
-                                            <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 16 }} >
+                                            <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 16, marginLeft: 30 }} >
                                                 <Text style={{ flex: 2, color: 'black' }} >{details.course}</Text>
                                                 <Text style={{ flex: 2, color: 'black' }}>{details.venue}</Text>
                                                 <Text style={{ flex: 3, color: 'black' }}>{details.time}</Text>
-                                                <Text style={{ flex: 2, color: 'black' }} numberOfLines={1} ellipsizeMode="tail">
+                                                {/* <Text style={{ flex: 2, color: 'black' }} numberOfLines={1} ellipsizeMode="tail">
                                                     {details.teacher}
-                                                </Text>
+                                                </Text> */}
 
                                                 {/* Add your UncontrolledTooltip component here */}
                                             </View>
@@ -256,7 +284,7 @@ const Timetable = () => {
                     );
                 })}
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 };
 
@@ -285,10 +313,13 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     bgSiteTable: {
-        backgroundColor: 'your-color', // Replace with your desired background color
+        // Replace with your desired background color
+        backgroundColor: '#D7DAF2', elevation: 9, borderRadius: 2,
+        marginHorizontal: 10
     },
     bgSiteTableNone: {
-        backgroundColor: 'your-color', // Replace with your desired background color
+        backgroundColor: 'white',
+        marginHorizontal: 10// Replace with your desired background color
     },
     dayName: {
         fontSize: 18,

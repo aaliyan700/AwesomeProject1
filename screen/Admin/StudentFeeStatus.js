@@ -2,9 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, ActivityIndicator, FlatList, ScrollView, RefreshControl, Image, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
-import { Button } from 'react-native-paper';
+import { Button, TextInput } from 'react-native-paper';
 import { calendarFormat } from 'moment';
+import { Appbar, Menu, Divider, Provider, Dialog } from 'react-native-paper';
 const StudentFeeStatus = ({ navigation, route }) => {
+    const [visible, setVisible] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [id, setId] = useState(0);
+    // const showDialog = () => setVisible(true);
+    const showDialog = (id) => {
+        setVisible(true);
+        setId(id);
+        console.log("id", id);
+    }
+    const hideDialog = () => setVisible(false);
+    const handleInputChange = (text) => setInputValue(text);
     const { item } = route.params;
     const [isLoading, setIsLoading] = useState(true);
     const [feeStatus, setFeeStatus] = useState([]);
@@ -48,10 +60,10 @@ const StudentFeeStatus = ({ navigation, route }) => {
             console.log(err);
         }
     }
-    const rejectFee = async (id) => {
+    const rejectFee = async () => {
         try {
             const response = await fetch(
-                `http://${IP}/StudentPortal/api/Admin/RejectFee?challanId=${id}`, {
+                `http://${IP}/StudentPortal/api/Admin/RejectFee?challanId=${id}&&remarks=${inputValue}`, {
                 method: 'POST',
             }
             );
@@ -83,13 +95,11 @@ const StudentFeeStatus = ({ navigation, route }) => {
                 </View>
                 <View style={{ alignItems: 'center' }}>
                     {item.status ? (
-                        <Button mode="contained" style={styles.btn1} onPress={() => rejectFee(item.id)}>Reject</Button>
+                        <Button mode="contained" style={styles.btn1} onPress={() => showDialog(item.id)}>Reject</Button>
                     ) : (
                         <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
                     )}
                 </View>
-                {/* <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
-                <Button mode="contained" style={styles.btn1} onPress={() => rejectFee(item.id)}>Reject</Button> */}
             </View>
         );
     };
@@ -102,22 +112,38 @@ const StudentFeeStatus = ({ navigation, route }) => {
         setRefreshing(false);
     };
     return (
-        <View style={styles.container}>
-            {isLoading ? (
-                <ActivityIndicator size="large" color="#099e78" />
-            ) : (
-                <View>
-                    <FlatList
-                        data={feeStatus}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                        }
-                    />
-                </View>
-            )}
-        </View >
+        <Provider>
+            <View style={styles.container}>
+                {isLoading ? (
+                    <ActivityIndicator size="large" color="#099e78" />
+                ) : (
+                    <View>
+                        <FlatList
+                            data={feeStatus}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id}
+                            refreshControl={
+                                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+                            }
+                        />
+                    </View>
+                )}
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Enter Remarks</Dialog.Title>
+                    <Dialog.Content>
+                        <TextInput
+                            label="Enter  Remarks"
+                            value={inputValue}
+                            onChangeText={handleInputChange}
+                            mode='outlined'
+                            style={{ height: 200 }}
+                            multiline
+                        />
+                        <Button mode="contained" style={styles.btn} onPress={() => rejectFee()}>Submit</Button>
+                    </Dialog.Content>
+                </Dialog>
+            </View >
+        </Provider>
     );
 };
 

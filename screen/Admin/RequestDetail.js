@@ -88,13 +88,23 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Image, FlatList, ActivityIndicator } from 'react-native';
 import IP from '../ip';
-import { Button } from 'react-native-paper';
-
+import { Button, TextInput } from 'react-native-paper';
+import { Appbar, Menu, Divider, Provider, Dialog } from 'react-native-paper';
 const RequestDetail = ({ route }) => {
     const { item } = route.params;
     const [fileImage, setFileImage] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Add isLoading state
-
+    const [visible, setVisible] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [id, setId] = useState(0);
+    // const showDialog = () => setVisible(true);
+    const showDialog = (id) => {
+        setVisible(true);
+        setId(id);
+        console.log("id", id);
+    }
+    const hideDialog = () => setVisible(false);
+    const handleInputChange = (text) => setInputValue(text);
     const GetImages = async () => {
         try {
             let query = `http://${IP}/StudentPortal/api/Admin/GetFinancialAssistanceImages?id=${item.id}`;
@@ -125,10 +135,10 @@ const RequestDetail = ({ route }) => {
             console.log(err);
         }
     };
-    const rejectRequest = async (id) => {
+    const rejectRequest = async () => {
         try {
             const response = await fetch(
-                `http://${IP}/StudentPortal/api/Admin/RejectFinancialAssistanceRequest?id=${id}`,
+                `http://${IP}/StudentPortal/api/Admin/RejectFinancialAssistanceRequest?id=${id}&&remarks=${inputValue}`,
                 {
                     method: 'POST',
                 }
@@ -150,38 +160,57 @@ const RequestDetail = ({ route }) => {
         </View>
     );
     return (
-        <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <Text style={styles.font}>{item.reg_no}</Text>
-                <Text style={styles.font}>{item.name}</Text>
-                <Text style={{ color: 'black' }}>Application:   {item.description}</Text>
-            </View>
-            {isLoading ? ( // Show activity indicator while loading data
-                <ActivityIndicator style={styles.activityIndicator} />
-            ) : fileImage && fileImage.length > 0 ? (
-                <FlatList
-                    data={fileImage}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                />
-            ) : (
-                <Image
-                    source={require('../images/avatar-icon.png')}
-                    style={styles.placeholderImage}
-                />
-            )}
+        <Provider>
+            <View style={styles.container}>
+                <View style={styles.subContainer}>
+                    <Text style={styles.font}>{item.reg_no}</Text>
+                    <Text style={styles.font}>{item.name}</Text>
+                    <Text style={{ color: 'black' }}>Application:   {item.description}</Text>
+                </View>
+                {isLoading ? ( // Show activity indicator while loading data
+                    <ActivityIndicator style={styles.activityIndicator} />
+                ) : fileImage && fileImage.length > 0 ? (
+                    <FlatList
+                        data={fileImage}
+                        renderItem={renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                ) : (
+                    <Image
+                        source={require('../images/avatar-icon.png')}
+                        style={styles.placeholderImage}
+                    />
+                )}
 
-            <View style={styles.btnView}>
-                <Button mode="contained" style={styles.btn} onPress={() => approveRequest(item.id)}>
-                    Accept
-                </Button>
-                <Button mode="contained" style={styles.btn} onPress={() => rejectRequest(item.id)}>
+                <View style={styles.btnView}>
+                    <Button mode="contained" style={styles.btn} onPress={() => approveRequest(item.id)}>
+                        Accept
+                    </Button>
+                    {/* <Button mode="contained" style={styles.btn} onPress={() => rejectRequest(item.id)}>
                     Reject
-                </Button>
+                </Button> */}
+                    <Button mode="contained" style={styles.btn} onPress={() => showDialog(item.id)}>
+                        Reject
+                    </Button>
+                </View>
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Enter Remarks</Dialog.Title>
+                    <Dialog.Content>
+                        <TextInput
+                            label="Enter  Remarks"
+                            value={inputValue}
+                            onChangeText={handleInputChange}
+                            mode='outlined'
+                            style={{ height: 200 }}
+                            multiline
+                        />
+                        <Button mode="contained" style={styles.btn} onPress={() => rejectRequest()}>Submit</Button>
+                    </Dialog.Content>
+                </Dialog>
             </View>
-        </View>
+        </Provider>
     );
 };
 export default RequestDetail
@@ -235,7 +264,8 @@ const styles = StyleSheet.create({
     {
         marginHorizontal: 10,
         paddingHorizontal: 30,
-        backgroundColor: '#099e78'
+        backgroundColor: '#099e78',
+        marginVertical: 10
     }
 })
 

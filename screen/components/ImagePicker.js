@@ -12,8 +12,9 @@ import {
     PermissionsAndroid,
 } from 'react-native';
 import { Button, Text } from 'react-native-paper';
-
+import { ScrollView } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { calendarFormat } from 'moment';
 
 const ImagePicker = ({ imageData, setImageData }) => {
     const requestCameraPermission = async () => {
@@ -57,24 +58,68 @@ const ImagePicker = ({ imageData, setImageData }) => {
         }
     };
 
-    const captureImage = async type => {
-        console.log("hiii");
+    // const captureImage = async type => {
+    //     console.log("hiii");
+    //     let options = {
+    //         mediaType: type,
+    //         maxWidth: 800,
+    //         maxHeight: 500,
+    //         quality: 1,
+    //         videoQuality: 'low',
+    //         durationLimit: 30, //Video max duration in seconds
+    //         saveToPhotos: true,
+    //     };
+    //     let isCameraPermitted = await requestCameraPermission();
+    //     let isStoragePermitted = await requestExternalWritePermission();
+    //     if (isCameraPermitted && isStoragePermitted) {
+    //         console.log('Capture Image if block');
+    //         launchCamera(options, response => {
+    //             console.log('Response = ', response);
+
+    //             if (response.didCancel) {
+    //                 alert('User cancelled camera picker');
+    //                 return;
+    //             } else if (response.errorCode == 'camera_unavailable') {
+    //                 alert('Camera not available on device');
+    //                 return;
+    //             } else if (response.errorCode == 'permission') {
+    //                 alert('Permission not satisfied');
+    //                 return;
+    //             } else if (response.errorCode == 'others') {
+    //                 alert(response.errorMessage);
+    //                 return;
+    //             }
+    //             console.log('uri -> ', response.assets[0].uri);
+    //             console.log('width -> ', response.assets[0].width);
+    //             console.log('height -> ', response.height);
+    //             console.log('fileSize -> ', response.assets[0].fileSize);
+    //             console.log('type -> ', response.assets[0].type);
+    //             console.log('fileName -> ', response.assets[0].fileName);
+    //             setImageData({
+    //                 uri: response.assets[0].uri,
+    //                 name: response.assets[0].fileName,
+    //                 type: response.assets[0].type,
+    //             });
+    //         });
+    //         console.log("done")
+    //     }
+    // };
+    const captureImage = async (type) => {
         let options = {
             mediaType: type,
             maxWidth: 800,
             maxHeight: 500,
             quality: 1,
             videoQuality: 'low',
-            durationLimit: 30, //Video max duration in seconds
+            durationLimit: 30,
             saveToPhotos: true,
         };
+
         let isCameraPermitted = await requestCameraPermission();
         let isStoragePermitted = await requestExternalWritePermission();
-        if (isCameraPermitted && isStoragePermitted) {
-            console.log('Capture Image if block');
-            launchCamera(options, response => {
-                console.log('Response = ', response);
 
+        if (isCameraPermitted && isStoragePermitted) {
+            launchCamera(options, (response) => {
                 if (response.didCancel) {
                     alert('User cancelled camera picker');
                     return;
@@ -88,21 +133,27 @@ const ImagePicker = ({ imageData, setImageData }) => {
                     alert(response.errorMessage);
                     return;
                 }
-                console.log('uri -> ', response.assets[0].uri);
-                console.log('width -> ', response.assets[0].width);
-                console.log('height -> ', response.height);
-                console.log('fileSize -> ', response.assets[0].fileSize);
-                console.log('type -> ', response.assets[0].type);
-                console.log('fileName -> ', response.assets[0].fileName);
-                setImageData({
-                    uri: response.assets[0].uri,
-                    name: response.assets[0].fileName,
-                    type: response.assets[0].type,
-                });
+
+                if (response.assets && response.assets.length > 0) {
+                    const newImageData = response.assets.map((asset) => ({
+                        uri: asset.uri,
+                        name: asset.fileName,
+                        type: asset.type,
+                    }));
+                    setImageData((prevImageData) => {
+                        const updatedImageData = [...(prevImageData || []), ...newImageData];
+                        return updatedImageData;
+                    });
+                    console.log("image", imageData);
+                } else {
+                    alert('No image assets found');
+                }
             });
-            console.log("done")
         }
     };
+
+
+
 
     const chooseFile = type => {
         let options = {
@@ -136,17 +187,27 @@ const ImagePicker = ({ imageData, setImageData }) => {
     return (
         <View style={styles.container}>
             {/* <Image source={{ uri: imageData.uri }} style={styles.imageStyle} /> */}
-            {imageData?.uri && (
-                <Image source={{ uri: imageData.uri }} style={styles.imageStyle} />
-            )}
-
+            <View style={styles.imageContainer}>
+                {imageData && imageData.length > 0 ? (
+                    <ScrollView horizontal>
+                        {imageData.map((image, index) => (
+                            <Image key={index} source={{ uri: image.uri }} style={styles.imageStyle} />
+                        ))}
+                    </ScrollView>
+                ) : (
+                    <Text>No images selected</Text>
+                )}
+            </View>
+            {/* <View style={styles.imageContainer}>
+                {imageData && imageData.length > 0 ? (
+                    imageData.map((image, index) => (
+                        <Image key={index} source={{ uri: image.uri }} style={styles.imageStyle} />
+                    ))
+                ) : (
+                    <Text>No images selected</Text>
+                )}
+            </View> */}
             <View style={styles.buttonContainer}>
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    onPress={() => chooseFile('photo')}>
-                    Choose Image
-                </Button>
                 <Button
                     mode="contained"
                     style={styles.button}
@@ -173,11 +234,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#099e78'
     },
     imageStyle: {
-        width: 200,
-        height: 200,
+        width: 150,
+        height: 150,
         margin: 5,
-        borderWidth: 2,
-        borderColor: 'black',
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 10
+    },
+    imageContainer: {
+        flexDirection: 'row',
     },
 });
 

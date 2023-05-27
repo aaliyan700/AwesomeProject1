@@ -24,7 +24,7 @@ const MarkAttendance = ({ navigation, route }) => {
     const [isSelected, setSelection] = useState(true);
     const [type, setType] = useState('All');
     const [alist, setAlist] = useState([]);
-    const [imageData, setImageData] = useState({});
+    const [imageData, setImageData] = useState([]);
     const [limit, setLimit] = useState(0);
     const [courseAllocation, setCourseAllocation] = useState(item.course_allocation);
     const [date, setDate] = useState('');
@@ -103,8 +103,14 @@ const MarkAttendance = ({ navigation, route }) => {
             let data = new FormData();
             data.append('attendances', JSON.stringify(alist));
             data.append('allocationId', item.allocation_id);
-            data.append('image', imageData);
-            // data.append('dateTime', formattedDate)
+            imageData.forEach((image, index) => {
+                data.append(`image${index}`, {
+                    uri: image.uri,
+                    type: image.type,
+                    name: `image${index}.${image.name.split('.').pop()}`,
+                });
+            });
+            console.log("Form data", data);
             const requestOptions = {
                 method: 'POST',
                 body: data,
@@ -115,11 +121,51 @@ const MarkAttendance = ({ navigation, route }) => {
             );
             console.log(response);
             ToastAndroid.show("Marked", ToastAndroid.BOTTOM);
-
         } catch (error) {
             console.log('ERROR REQUEST', error);
         }
-    }
+    };
+
+    // const send = async () => {
+    //     const currentDate = new Date();
+    //     const options = {
+    //         day: 'numeric',
+    //         month: 'long',
+    //         year: 'numeric',
+    //         hour: '2-digit',
+    //         minute: '2-digit'
+    //     };
+    //     const formattedDate = currentDate.toLocaleString('en-US', options);
+    //     console.log("formatteddata", formattedDate);
+    //     try {
+    //         let data = new FormData();
+    //         data.append('attendances', JSON.stringify(alist));
+    //         data.append('allocationId', item.allocation_id);
+    //         // data.append('image', imageData);
+    //         imageData.forEach((image, index) => {
+    //             // data.append(`image${index}`, {
+    //             //     uri: image.uri,
+    //             //     type: image.type,
+    //             //     name: `image${index}.${image.fileName.split('.').pop()}`,
+    //             // });
+    //             data.append("image", imageData);
+    //         });
+    //         // data.append('dateTime', formattedDate)
+    //         const requestOptions = {
+    //             method: 'POST',
+    //             body: data,
+    //         };
+    //         const response = await fetch(
+    //             `http://${IP}/StudentPortal/api/Teacher/MarkAttendance`,
+    //             requestOptions,
+    //         );
+    //         console.log(response);
+    //         ToastAndroid.show("Marked", ToastAndroid.BOTTOM);
+
+    //     } catch (error) {
+    //         console.log('ERROR REQUEST', error);
+    //     }
+    // }
     useEffect(() => {
         console.log("data", alist);
         GetContestSetting();
@@ -225,6 +271,7 @@ const MarkAttendance = ({ navigation, route }) => {
                             }}
                         /> */}
                     </View>
+
                     {studentList?.map((items, index) => {
                         const imageUri = `http://${IP}/StudentPortal/ProfileImages/${items.profile_photo}`;
                         console.log(imageUri);
@@ -256,10 +303,10 @@ const MarkAttendance = ({ navigation, route }) => {
                             </View>
                         )
                     })}
+                    <ImagePicker imageData={imageData} setImageData={setImageData} />
                     <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
                         onPress={() => handle()}
                     >Save</Button>
-                    <ImagePicker imageData={imageData} setImageData={setImageData} />
                     <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
                         onPress={() => send()}
                     >Mark</Button>

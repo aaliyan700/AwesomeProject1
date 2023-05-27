@@ -67,7 +67,13 @@ const DashboardAdmin = ({ navigation }) => {
         {
             title: "Course Advisor",
             navigateScreen: "AddCourseAdvisor",
-            icon: require("../images/download.png"),
+            icon: require("../images/advisor.png"),
+            modal: 'none'
+        },
+        {
+            title: "Peer Evaluation",
+            navigateScreen: "AddPeerEvaluation",
+            icon: require("../images/evaluationteacher.png"),
             modal: 'none'
         },
     ]

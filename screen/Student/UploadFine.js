@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ToastAndroid } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import ImagePicker from '../components/ImagePicker';
+import ImagePickerComponent from '../components/ImagePickerComponent';
 import { Button } from 'react-native-paper';
 import IP from '../ip';
 const UploadFine = ({ route }) => {
@@ -33,7 +33,7 @@ const UploadFine = ({ route }) => {
     return (
         <View style={styles.container}>
             <Text style={styles.font}>UploadFine</Text>
-            <ImagePicker imageData={imageData} setImageData={setImageData} />
+            <ImagePickerComponent imageData={imageData} setImageData={setImageData} />
             <Button mode="contained" style={styles.btn}
                 onPress={uploadFine}>Upload Now</Button>
         </View>

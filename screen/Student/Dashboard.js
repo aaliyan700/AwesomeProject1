@@ -142,6 +142,7 @@ const Dashboard = ({ navigation, route }) => {
                                 <Menu.Item title="View Profile" />
                                 <Menu.Item title="CourseAdvisor" onPress={() => navigation.navigate("ViewAdvise")} />
                                 <Menu.Item title="Noticeboard" onPress={() => navigation.navigate("ViewNoticeboard")} />
+                                <Menu.Item title="Ranking" onPress={() => navigation.navigate("TeacherRanking")} />
                                 <Menu.Item title="Logout" onPress={() => logout()} />
                                 <Divider />
                             </Menu>

@@ -196,13 +196,29 @@ import {
 } from 'react-native';
 import { FAB, Button, TextInput, RadioButton } from 'react-native-paper';
 import IP from '../ip';
-
+import { Appbar, Menu, Divider, Provider, Dialog } from 'react-native-paper';
 const FineList = ({ navigation }) => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [refreshing, setRefreshing] = useState(false);
     const [checked, setChecked] = useState('all');
+    const [visible, setVisible] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [id, setId] = useState(0);
+    // const showDialog = () => setVisible(true);
+    const showDialog = (id) => {
+        setVisible(true);
+        setId(id);
+        console.log("id", id);
+    }
+    const hideDialog = () => setVisible(false);
+    const handleInputChange = (text) => setInputValue(text);
 
+    const handleConfirm = () => {
+        // Handle the entered value
+        console.log('Entered value:', inputValue);
+        hideDialog();
+    };
     const GetStudents = async () => {
         try {
             let query = `http://${IP}/StudentPortal/api/Admin/GetFineList`;
@@ -225,22 +241,24 @@ const FineList = ({ navigation }) => {
                     method: 'POST',
                 }
             );
-            Alert.alert('Approve Fine', 'Yes your fine is approved');
+            Alert.alert('Approve Fine', 'Approved');
             await GetStudents();
         } catch (err) {
             console.log(err);
         }
     };
 
-    const rejectFine = async (id) => {
+    const rejectFine = async () => {
         try {
             const response = await fetch(
-                `http://${IP}/StudentPortal/api/Admin/RejectFine?id=${id}`,
+                `http://${IP}/StudentPortal/api/Admin/RejectFine?id=${id}&&remarks=${inputValue}`,
                 {
                     method: 'POST',
                 }
             );
-            Alert.alert('Reject Fine', 'Sorry your fine is Rejected');
+            // const data = await response.json();
+            // console.log(data);
+            Alert.alert('Reject Fine', 'Rejected..');
             await GetStudents();
         } catch (err) {
             console.log(err);
@@ -273,8 +291,10 @@ const FineList = ({ navigation }) => {
                         )}
                         <View style={{ flexDirection: 'row' }}>
                             {item.status ? (
+                                // <Button mode='contained' style={styles.Btn}
+                                //     onPress={() => rejectFine(item.id)}>Reject</Button>
                                 <Button mode='contained' style={styles.Btn}
-                                    onPress={() => rejectFine(item.id)}>Reject</Button>
+                                    onPress={() => showDialog(item.id)}>Reject</Button>
                             ) : (
                                 <Button mode='contained' style={styles.Btn}
                                     onPress={() => approveFine(item.id)}>Approve</Button>
@@ -328,29 +348,44 @@ const FineList = ({ navigation }) => {
         GetStudents();
         setRefreshing(false);
     };
-
     return (
-        <View style={styles.container}>
-            <RadioButton.Group onValueChange={value => setChecked(value)}
-                value={checked}>
-                <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, paddingHorizontal: 30 }}>
-                    <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 7, borderRadius: 10 }}>
-                        <Text style={{ margin: 10, color: 'black' }}>All</Text>
-                        <RadioButton value='all' label="all" />
-                        <Text style={{ margin: 10, color: 'black' }}>Paid</Text>
-                        <RadioButton value='true' label="asg" />
-                        <Text style={{ margin: 10, color: 'black' }}>Pending</Text>
-                        <RadioButton value='false' label="asg" />
+        <Provider>
+            <View style={styles.container}>
+                <RadioButton.Group onValueChange={value => setChecked(value)}
+                    value={checked}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 10, paddingHorizontal: 30 }}>
+                        <View style={{ flexDirection: 'row', backgroundColor: 'white', elevation: 7, borderRadius: 10 }}>
+                            <Text style={{ margin: 10, color: 'black' }}>All</Text>
+                            <RadioButton value='all' label="all" />
+                            <Text style={{ margin: 10, color: 'black' }}>Paid</Text>
+                            <RadioButton value='true' label="asg" />
+                            <Text style={{ margin: 10, color: 'black' }}>Pending</Text>
+                            <RadioButton value='false' label="asg" />
+                        </View>
                     </View>
-                </View>
-            </RadioButton.Group>
-            {renderFilteredList()}
-            <FAB
-                label='Add Fine'
-                style={styles.fab}
-                onPress={() => navigation.navigate('AddFine')}
-            />
-        </View>
+                </RadioButton.Group>
+                {renderFilteredList()}
+                <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Enter Remarks</Dialog.Title>
+                    <Dialog.Content>
+                        <TextInput
+                            label="Enter  Remarks"
+                            value={inputValue}
+                            onChangeText={handleInputChange}
+                            mode='outlined'
+                            style={{ height: 200 }}
+                            multiline
+                        />
+                        <Button mode="contained" style={styles.btn} onPress={() => rejectFine(id)}>Submit</Button>
+                    </Dialog.Content>
+                </Dialog>
+                <FAB
+                    label='Add Fine'
+                    style={styles.fab}
+                    onPress={() => navigation.navigate('AddFine')}
+                />
+            </View>
+        </Provider>
     );
 };
 
@@ -399,6 +434,12 @@ const styles = StyleSheet.create({
         marginHorizontal: 2,
         marginVertical: 5,
     },
+    btn:
+    {
+        marginHorizontal: 30,
+        backgroundColor: "#099e78",
+        marginVertical: 10
+    }
 });
 
 export default FineList;

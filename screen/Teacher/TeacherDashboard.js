@@ -15,12 +15,17 @@ const TeacherDashboard = ({ navigation }) => {
         {
             title: "Grading",
             navigateScreen: "EvaluationTeacher",
-            icon: require("../images/timetable.png")
+            icon: require("../images/grading.png")
         },
         {
             title: "Course Advisor",
             navigateScreen: "CourseAdvisor",
-            icon: require("../images/timetable.png")
+            icon: require("../images/advisor.png")
+        },
+        {
+            title: "Peer Evaluation",
+            navigateScreen: "ViewEvaluationTeacher",
+            icon: require("../images/advisor.png")
         },
     ]
     const [userData, setUserData] = useState({});
