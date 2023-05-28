@@ -105,4 +105,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row-reverse',
         marginRight: 20,
     },
+    loadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    loadingText: {
+        marginTop: 10,
+        fontSize: 16,
+        color: '#099e78',
+    },
 })
