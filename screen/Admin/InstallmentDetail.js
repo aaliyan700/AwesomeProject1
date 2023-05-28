@@ -1,9 +1,46 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Alert, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import { Button } from 'react-native-paper';
+import IP from '../ip';
 const InstallmentDetail = ({ route }) => {
     const { item } = route.params;
     console.log("data", item);
+    console.log("ID", item.id);
+    const [isLoading, setIsLoading] = useState(false);
+    const approveFee = async () => {
+        console.log("data");
+        try {
+            const response = await fetch(
+                `http://${IP}/StudentPortal/api/Student/AcceptInstallmentRequest?id=${item.id}`,
+                {
+                    method: 'POST',
+                }
+            );
+            //const data = await response.json();
+            //console.log("reposne", data);
+            setIsLoading(true);
+            Alert.alert('Approve Fine', 'Approved');
+        } catch (err) {
+            console.log(err);
+            setIsLoading(false);
+        }
+    };
+    const rejectFee = async () => {
+        console.log("data");
+        try {
+            const response = await fetch(
+                `http://${IP}/StudentPortal/api/Student/RejectInstallmentRequest?id=${item.id}`,
+                {
+                    method: 'POST',
+                }
+            );
+            //const data = await response.json();
+            //console.log("reposne", data);
+            Alert.alert('Reject', 'Rejected');
+        } catch (err) {
+            console.log(err);
+        }
+    };
     return (
         <View style={styles.container}>
             <View style={styles.header}>
@@ -21,8 +58,16 @@ const InstallmentDetail = ({ route }) => {
                 })
             }
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, padding: 10 }}>
-                <Button code="contained" color='white' style={{ backgroundColor: '#099e78' }}>Approve</Button>
-                <Button code="outlined" color='white' style={{ backgroundColor: 'red', }}>Reject</Button>
+                <Button
+                    code="contained"
+                    color="white"
+                    style={{ backgroundColor: '#099e78' }}
+                    onPress={approveFee}
+                    disabled={isLoading} // Disable the button while loading
+                >
+                    {isLoading ? 'Loading...' : 'Approve'}
+                </Button>
+                <Button code="outlined" color='white' style={{ backgroundColor: 'red', }} onPress={rejectFee}>Reject</Button>
             </View>
 
         </View>
