@@ -18,6 +18,10 @@ const HandleFinance = ({ navigation }) => {
                     <Icon name="notifications" size={30} color='#fff' />
                     <Text style={styles.fontBtn}>Fee</Text>
                 </Pressable>
+                <Pressable style={styles.pressBtn} onPressIn={() => navigation.navigate('InstallmentList')} >
+                    <Icon name="notifications" size={30} color='#fff' />
+                    <Text style={styles.fontBtn}>Installment Approvals</Text>
+                </Pressable>
             </View>
         </View>
     )

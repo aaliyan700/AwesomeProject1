@@ -16,7 +16,7 @@ const FineDetail = ({ navigation }) => {
             const response = await fetch(query, { method: 'GET' });
             const data = await response.json();
             setFine(data);
-            console.log(data);
+            console.log("data", data);
             setLoading(false);
 
         } catch (err) {
@@ -36,9 +36,11 @@ const FineDetail = ({ navigation }) => {
                 <Text style={styles.fontDesign}>{item.amount}</Text>
                 {item.status === false ? (
                     <Text style={styles.fontDesign}>Not Paid</Text> // Render "Not Paid" if isPending is false
-                ) : (
+                ) : item.status == true ? (
                     <Text style={styles.fontDesign}>Paid</Text> // Render "Paid" if isPending is true
-                )}
+                ) : (<View>
+                    <Text style={styles.fontDesign}>Pending</Text>
+                </View>)}
             </View>
         </TouchableOpacity>
     );

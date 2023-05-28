@@ -35,23 +35,24 @@ const ViewFineDetail = ({ route }) => {
     };
     return (
         <View style={styles.container}>
-            <View style={{ elevation: 7, backgroundColor: 'white', marginHorizontal: 20, padding: 20, marginVertical: 50 }}>
-                <View style={{ marginVertical: 20, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 20 }}>
+            <View style={{ elevation: 7, backgroundColor: 'white', marginHorizontal: 10, padding: 20, marginVertical: 50 }}>
+                <View style={{ marginVertical: 20, flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 1 }}>
                     <View>
-                        <Text style={styles.fontDesign}>Reg No</Text>
-                        <Text style={styles.fontDesign}>Name</Text>
-                        <Text style={styles.fontDesign}>Class</Text>
-                        <Text style={styles.fontDesign}>Date</Text>
-                        <Text style={styles.fontDesign}>Description</Text>
-                        <Text style={styles.fontDesign}>Amount</Text>
+                        <Text style={styles.fontDesign}>Reg No:</Text>
+                        <Text style={styles.fontDesign}>Name:</Text>
+                        <Text style={styles.fontDesign}>Class:</Text>
+                        <Text style={styles.fontDesign}>Date:</Text>
+                        <Text style={styles.fontDesign}>Amount:</Text>
+                        <Text style={styles.fontDesign}>Description:</Text>
+
                     </View>
                     <View>
                         <Text style={styles.fontDesign}>{item.reg_no}</Text>
                         <Text style={styles.fontDesign}>{item.name}</Text>
                         <Text style={styles.fontDesign}>B{item.program}{item.semester}{item.section}</Text>
                         <Text style={styles.fontDesign}>{item.date}</Text>
-                        <Text style={styles.fontDesign}>{item.description}</Text>
                         <Text style={styles.fontDesign}>{item.amount}</Text>
+                        <Text style={{ marginRight: 30 }}>{item.description}</Text>
                     </View>
 
                 </View>

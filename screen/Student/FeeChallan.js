@@ -95,30 +95,35 @@ const FeeChallan = ({ route, navigation }) => {
         }
         else if (selectedValue == 2 || selectedValue == 3) {
             try {
-                setIsLoading(true);
-                let installmentAmount = amounts;
-                const user_name = await AsyncStorage.getItem('username');
-                const model = {
-                    regNo: user_name,
-                    semesterFee: feeInfo.semesterFee,
-                    admissionFee: feeInfo.admissionFee,
-                    extraCourseFee: feeInfo.extraCourseFee,
-                    otherFee: feeInfo.otherFee,
-                    installmentAmount
-                };
-                const query = `http://${IP}/StudentPortal/api/Student/InstallmentRequest`;
-                const response = await fetch(query, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(model),
-                });
-                console.log('Generating........');
-                // const data = await response.json();
-                // console.log(data);
-                ToastAndroid.show("Request done", ToastAndroid.BOTTOM);
-                setIsLoading(false)
+                if (amounts.length == 2 || amounts.length == 3) {
+                    setIsLoading(true);
+                    let installmentAmount = amounts;
+                    const user_name = await AsyncStorage.getItem('username');
+                    const model = {
+                        regNo: user_name,
+                        semesterFee: feeInfo.semesterFee,
+                        admissionFee: feeInfo.admissionFee,
+                        extraCourseFee: feeInfo.extraCourseFee,
+                        otherFee: feeInfo.otherFee,
+                        installmentAmount
+                    };
+                    const query = `http://${IP}/StudentPortal/api/Student/InstallmentRequest`;
+                    const response = await fetch(query, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(model),
+                    });
+                    console.log('Generating........');
+                    // const data = await response.json();
+                    // console.log(data);
+                    ToastAndroid.show("Request done", ToastAndroid.BOTTOM);
+                    setIsLoading(false)
+                }
+                else {
+                    ToastAndroid.show("Enter amounts", ToastAndroid.BOTTOM);
+                }
             } catch (err) {
                 console.log(err);
                 setIsLoading(false)

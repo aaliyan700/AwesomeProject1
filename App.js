@@ -63,6 +63,8 @@ import ViewEvaluationTeacher from './screen/Teacher/ViewEvaluationTeacher';
 import TeacherQuestions from './screen/Teacher/TeacherQuestions';
 import TeacherRanking from './screen/Student/TeacherRanking';
 import ViewRanking from './screen/Student/ViewRanking';
+import InstallmentList from './screen/Admin/InstallmentList';
+import InstallmentDetail from './screen/Admin/InstallmentDetail';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -654,6 +656,26 @@ const App = () => {
                 <Stack.Screen
                     name="ViewRanking"
                     component={ViewRanking}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="InstallmentList"
+                    component={InstallmentList}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="InstallmentDetail"
+                    component={InstallmentDetail}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {
