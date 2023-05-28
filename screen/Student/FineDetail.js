@@ -35,7 +35,7 @@ const FineDetail = ({ navigation }) => {
                 <Text style={styles.fontDesign}>{item.description}</Text>
                 <Text style={styles.fontDesign}>{item.amount}</Text>
                 {item.status === false ? (
-                    <Text style={styles.fontDesign}>Not Paid</Text> // Render "Not Paid" if isPending is false
+                    <Text style={styles.fontDesign}>Rejected</Text> // Render "Not Paid" if isPending is false
                 ) : item.status == true ? (
                     <Text style={styles.fontDesign}>Paid</Text> // Render "Paid" if isPending is true
                 ) : (<View>

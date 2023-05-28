@@ -284,11 +284,12 @@ const FineList = ({ navigation }) => {
                         {/* <Text style={styles.fontDesign}>{item.date}</Text>
                         <Text style={styles.fontDesign}>{item.description}</Text>
                         <Text style={styles.fontDesign}>{item.amount}</Text> */}
-                        {item.status ? (
+                        {item.status == true ? (
                             <Text style={styles.fontDesign}>Paid</Text>
-                        ) : (
-                            <Text style={styles.fontDesign}>Not Paid</Text>
-                        )}
+                        ) : item.status == false ? (
+                            <Text style={styles.fontDesign}>Rejected</Text>
+                        ) : (<Text style={styles.fontDesign}>Not Paid</Text>)
+                        }
                         <View style={{ flexDirection: 'row' }}>
                             {item.status ? (
                                 // <Button mode='contained' style={styles.Btn}

@@ -34,6 +34,7 @@ const InstallmentList = ({ navigation }) => {
                             installment?.map((item, index) => {
                                 return (
                                     <Pressable
+                                        key={index}
                                         style={styles.mainDiv}
                                         onPressOut={() => navigation.navigate('InstallmentDetail', { item })}
                                     >
