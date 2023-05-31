@@ -8,40 +8,79 @@ import {
 import IP from '../ip';
 import DocumentPicker from 'react-native-document-picker';
 import { RadioButton } from 'react-native-paper';
+import { G } from 'react-native-svg';
 const AddDatesheet = () => {
     const [singleFile, setSingleFile] = useState({});
     const [type, setType] = useState('mid');
-
     const uploadImage = async () => {
-        if (singleFile != null || singleFile == null) {
-
-            const data = new FormData();
-            data.append('datesheetfile', {
-                uri: 'content://com.android.externalstorage.documents/document/primary%3AFINAL%20EXAM%20Date%20sheet%20Spring%20%202022%20%20%20Ver-2.xls',
-                name: 'FINAL EXAM Date sheet Spring  2022   Ver-2.xls',
-                type: 'application/vnd.ms-excel',
-            });
-            data.append('type', type);
-            console.log('data of file', data.getAll());
-            if (type == null) {
-                alert("Please select type");
-            }
-            else {
-                let res = await fetch(
-                    `http://${IP}/StudentPortal/api/Admin/AddDatesheet`,
-                    {
-                        method: 'post',
-                        body: data,
-                    }
-                );
-            }
-            let responseJson = await res.json();
-            console.log(responseJson);
-            alert(responseJson);
+        console.log("file", singleFile);
+        if (singleFile == null) {
+            alert('Please select a file'); // Display alert if no file selected
         } else {
-            alert('Please Select File first');
+            try {
+                const data = new FormData();
+                data.append('datesheetfile', {
+                    uri: 'content://com.android.externalstorage.documents/document/primary%3AFINAL%20EXAM%20Date%20sheet%20Spring%20%202022%20%20%20Ver-2%20(1).xls',
+                    name: 'FINAL EXAM Date sheet Spring  2022   Ver-2 (1).xls',
+                    type: 'application/vnd.ms-excel',
+                });
+                data.append('type', type);
+                console.log('data of file', data.getAll());
+
+                if (!type) {
+                    alert("Please select type");
+                } else {
+                    let res = await fetch(
+                        `http://${IP}/StudentPortal/api/Admin/AddDatesheet`,
+                        {
+                            method: 'post',
+                            body: data,
+                        }
+                    );
+                    let responseJson = await res.json();
+                    console.log(responseJson);
+                    alert(responseJson);
+                }
+            } catch (err) {
+                alert("Something went wrong");
+            }
         }
     };
+    // const uploadImage = async () => {
+    //     console.log("file", singleFile);
+    //     if (singleFile == null) {
+    //         console.log("single file");
+    //         try {
+    //             const data = new FormData();
+    //             data.append('datesheetfile', {
+    //                 uri: 'content://com.android.externalstorage.documents/document/primary%3AFINAL%20EXAM%20Date%20sheet%20Spring%20%202022%20%20%20Ver-2.xls',
+    //                 name: 'FINAL EXAM Date sheet Spring  2022   Ver-2.xls',
+    //                 type: 'application/vnd.ms-excel',
+    //             });
+    //             data.append('type', type);
+    //             console.log('data of file', data.getAll());
+    //             if (!type) {
+    //                 alert("Please select type");
+    //             }
+    //             else {
+    //                 let res = await fetch(
+    //                     `http://${IP}/StudentPortal/api/Admin/AddDatesheet`,
+    //                     {
+    //                         method: 'post',
+    //                         body: data,
+    //                     }
+    //                 );
+    //             }
+    //             let responseJson = await res.json();
+    //             console.log(responseJson);
+    //             alert(responseJson);
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     } else {
+    //         alert('Please Select File first');
+    //     }
+    // };
 
     const selectFile = async () => {
         try {

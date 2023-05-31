@@ -18,8 +18,8 @@ const App = () => {
             const data = new FormData();
             data.append('name', 'Image Upload');
             data.append('timetablefile', {
-                uri: 'content://com.android.externalstorage.documents/document/primary%3ATime%20Table%20Fall%202022%20v7%20for%20Students%20(2).xlsx',
-                name: '"Time Table Fall 2022 v7 for Students (2).xlsx',
+                uri: 'content://com.android.externalstorage.documents/document/primary%3ATime%20Table%20Fall%202022%20v7%20for%20Students%20(5).xlsx',
+                name: 'Time Table Fall 2022 v7 for Students (5).xlsx',
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             });
             console.log(singleFile);

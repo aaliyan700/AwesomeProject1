@@ -9,6 +9,7 @@ const InstallmentDetail = ({ route }) => {
     const [isLoading, setIsLoading] = useState(false);
     const approveFee = async () => {
         console.log("data");
+        setIsLoading(true);
         try {
             const response = await fetch(
                 `http://${IP}/StudentPortal/api/Student/AcceptInstallmentRequest?id=${item.id}`,
@@ -18,8 +19,9 @@ const InstallmentDetail = ({ route }) => {
             );
             //const data = await response.json();
             //console.log("reposne", data);
-            setIsLoading(true);
+            setIsLoading(false);
             Alert.alert('Approve Fine', 'Approved');
+            setIsLoading(false);
         } catch (err) {
             console.log(err);
             setIsLoading(false);
@@ -58,12 +60,20 @@ const InstallmentDetail = ({ route }) => {
                 })
             }
             <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', marginTop: 10, padding: 10 }}>
-                <Button
+                {/* <Button
                     code="contained"
                     color="white"
                     style={{ backgroundColor: '#099e78' }}
                     onPress={approveFee}
                     disabled={isLoading} // Disable the button while loading
+                >
+                    {isLoading ? 'Loading...' : 'Approve'}
+                </Button> */}
+                <Button
+                    mode="contained"
+                    style={{ backgroundColor: '#099e78' }}
+                    onPress={approveFee}
+                    disabled={isLoading}
                 >
                     {isLoading ? 'Loading...' : 'Approve'}
                 </Button>

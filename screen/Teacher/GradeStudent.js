@@ -23,17 +23,13 @@ const GradeStudent = ({ navigation, route }) => {
     const [open, setOpen] = useState(false);
     const [type, setType] = useState('class');
     const [alist, setAlist] = useState([]);
-    const [totalMarks, setTotalMarks] = useState("");
-    const [obtMarks, setObtMarks] = useState("");
+    const [totalMarks, setTotalMarks] = useState(0);
+    const [obtMarks, setObtMarks] = useState(0);
     const [title, setTitle] = useState('');
-    // const [marksList, setMarks] = useState([]);
-    // const [sessionalList, setSessional] = useState([]);
-
     const updateStudentList = (id, newNumber) => {
         setStudentList(prevState => {
             // make a copy of the original state
             const newState = [...prevState];
-
             // use map() method to update the object
             const updatedState = newState.map(obj => {
                 console.log("Obj", obj.id, "id", id)
@@ -105,6 +101,7 @@ const GradeStudent = ({ navigation, route }) => {
     }
     const send = async () => {
         console.log(alist, "<<<<")
+
         try {
             const response = await fetch(
                 `http://${IP}/StudentPortal/api/Teacher/MarkAttendence`, {
@@ -128,9 +125,19 @@ const GradeStudent = ({ navigation, route }) => {
         console.log('mn yhn hn', studentList);
         console.log("Saving...");
         let marksList = [];
+        // studentList.map((i) => {
+        //     marksList.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks });
+        // })
         studentList.map((i) => {
-            marksList.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks });
-        })
+            const obtainedMarks = i.obtained_marks || 0; // Set obtained_marks to 0 if it is null
+            marksList.push({
+                enrollment_id: i.id,
+                type: type,
+                total_marks: totalMarks,
+                obtained_marks: obtainedMarks
+            });
+        });
+
         let temp = [];
         studentList.map((i) => {
             temp.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks });
@@ -152,18 +159,23 @@ const GradeStudent = ({ navigation, route }) => {
         // }
         // else {
         try {
-            const response = await fetch(
-                `http://${IP}/StudentPortal/api/Teacher/MarkMidFinal`, {
-                method: 'POST',
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(marksList)
-            }
-            );
+            if (totalMarks) {
+                const response = await fetch(
+                    `http://${IP}/StudentPortal/api/Teacher/MarkMidFinal`, {
+                    method: 'POST',
+                    headers: {
+                        Accept: "application/json",
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(marksList)
+                }
+                );
 
-            ToastAndroid.show("Student Marked", ToastAndroid.BOTTOM);
+                ToastAndroid.show("Student Marked", ToastAndroid.BOTTOM);
+                navigation.navigate("TeacherDashboard");
+            } else {
+                alert("Please enter required fields");
+            }
         } catch (ex) { alert(ex.message) }
     }
     const gradeSessional = async () => {
@@ -178,15 +190,24 @@ const GradeStudent = ({ navigation, route }) => {
             temp.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks });
         })
         let sessionalList = [];
+        // studentList.map((i) => {
+        //     console.log("i objtained ", i.obtained_marks)
+        //     sessionalList.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks, title: title });
+        // })
         studentList.map((i) => {
-            console.log("i objtained ", i.obtained_marks)
-            sessionalList.push({ enrollment_id: i.id, type: type, total_marks: totalMarks, obtained_marks: i.obtained_marks, title: title });
-        })
+            console.log("i obtained", i.obtained_marks);
+            const obtainedMarks = i.obtained_marks || 0; // Set obtained_marks to 0 if it is null
+            sessionalList.push({
+                enrollment_id: i.id,
+                type: type,
+                total_marks: totalMarks,
+                obtained_marks: obtainedMarks,
+                title: title
+            });
+        });
         setAlist(temp);
         // setSessional(temp1);
         console.info("first", sessionalList);
-        console.log(alist, "<<<<")
-        console.log("check", totalMarks, title, obtMarks);
         if (totalMarks && title) {
             try {
                 const response = await fetch(
@@ -201,6 +222,7 @@ const GradeStudent = ({ navigation, route }) => {
                 );
 
                 alert("Marked..!")
+                navigation.navigate("TeacherDashboard");
             } catch (ex) { alert(ex.message) }
         }
         else {
@@ -233,8 +255,8 @@ const GradeStudent = ({ navigation, route }) => {
     }, [alist]);
     return (
         <ScrollView>
-            <View>
-                <View style={{ marginHorizontal: 0, borderWidth: 2, borderColor: 'white', marginTop: 10 }}>
+            <View style={styles.container}>
+                <View style={{ marginHorizontal: 0, borderWidth: 2, borderColor: 'white', marginTop: 10, elevation: 3 }}>
                     <Picker
                         mode='modal'
                         selectedValue={selectedProgram}
@@ -254,7 +276,7 @@ const GradeStudent = ({ navigation, route }) => {
 
                     </Picker>
                 </View>
-                <View style={{ backgroundColor: 'white', padding: 10, marginHorizontal: 50, marginTop: 5, marginLeft: 10, width: '80%' }}>
+                <View style={{ backgroundColor: 'white', padding: 10, marginTop: 5, marginLeft: 10, width: '95%', elevation: 9, alignItems: 'center', borderRadius: 10 }}>
 
                     <RadioButton.Group onValueChange={value => setType(value)} value={type}>
                         <View style={{ flexDirection: 'row' }}>
@@ -276,34 +298,41 @@ const GradeStudent = ({ navigation, route }) => {
                     </RadioButton.Group>
 
                     <Text style={{ color: 'black', fontSize: 18 }}>{courseName}</Text>
-                    <Text style={{ color: 'black', fontSize: 15 }}>BS-{item.program} {item.semester}</Text>
+                    {/* <Text style={{ color: 'black', fontSize: 15 }}>BS-{item.program} {item.semester}{item.section}</Text> */}
                 </View>
 
                 {
                     type == "midterm" ? (
                         <TextInput label="Total Marks" mode="outlined"
                             value={totalMarks}
-                            onChangeText={(val) => setTotalMarks(val)} />
+                            onChangeText={(val) => setTotalMarks(val)}
+                            style={{ marginHorizontal: 30 }} />
                     ) : type === "finalterm" ?
                         (
                             <TextInput label="Total Marks" mode="outlined"
                                 value={totalMarks}
-                                onChangeText={(val) => setTotalMarks(val)} />
+                                onChangeText={(val) => setTotalMarks(val)}
+                                style={{ marginHorizontal: 30 }} />
                         ) : type === "asg" ? (
                             <View>
                                 <TextInput label="Total Marks" mode="outlined"
+                                    style={{ marginHorizontal: 30 }}
                                     onChangeText={(val) => setTotalMarks(val)} value={totalMarks} />
                                 <TextInput label="Assignment Title" placeholder='Assignment Title' mode="outlined"
                                     value={title}
+                                    style={{ marginHorizontal: 30 }}
                                     onChangeText={(val1) => setTitle(val1)}
                                 />
                             </View>
                         ) : type === "quiz" ? (
                             <View>
                                 <TextInput label="Total Marks" placeholder='Total Marks' mode="outlined"
-                                    onChangeText={(val) => setTotalMarks(val)}
+                                    style={{ marginHorizontal: 30 }}
+                                    onChangeText={(val) => setTotalMarks(val)
+                                    }
                                     value={totalMarks} />
                                 <TextInput label="Quiz Title" placeholder='Quiz Title' mode="outlined"
+                                    style={{ marginHorizontal: 30 }}
                                     onChangeText={(val1) => setTitle(val1)}
                                     value={title} />
                             </View>
@@ -328,9 +357,6 @@ const GradeStudent = ({ navigation, route }) => {
                                     </View>
                                 )
                             })}
-                            {/* <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
-                                onPress={() => handle()}
-                            >Save</Button> */}
                             <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
                                 onPress={() => marksExams()}
                             >Mark</Button>
@@ -353,9 +379,6 @@ const GradeStudent = ({ navigation, route }) => {
                                     </View>
                                 )
                             })}
-                            {/* <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
-                                onPress={() => handle()}
-                            >Save</Button> */}
                             <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
                                 onPress={() => marksExams()}
                             >Mark</Button>
@@ -419,35 +442,6 @@ const GradeStudent = ({ navigation, route }) => {
                         </View>
                     ) : ("")
                 }
-                {/* {studentList?.map((items, index) => {
-                    return (
-                        <View key={index} style={styles.box}>
-                            <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
-                                <Text style={{ fontSize: 15, color: 'black', fontFamily: 'arial' }}>{items.name}</Text>
-                            </View>
-                            <View style={{ flex: 8, marginLeft: 5, marginRight: 5 }}>
-                                <Text style={{ fontSize: 13, color: 'black' }}>{items.reg_no}</Text>
-                            </View>
-
-                            <View style={{ flex: 3, marginLeft: 5, marginRight: 5 }}>
-                                <Button
-                                    color="white"
-                                    style={{ backgroundColor: '#099e78' }}
-                                    onPress={() => handleClick(items.id)}
-                                >
-                                    {items.status}
-                                </Button>
-                            </View>
-
-                        </View>
-                    )
-                })} */}
-                {/* <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
-                    onPress={() => handle()}
-                >Save</Button>
-                <Button mode='contained' style={{ marginHorizontal: 40, marginTop: 10 }} color="#099e78"
-                    onPress={() => send()}
-                >Mark</Button> */}
             </View >
         </ScrollView>
     )
@@ -458,8 +452,15 @@ export default GradeStudent;
 const styles = StyleSheet.create({
     box:
     {
-        margin: 8,
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 6,
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 1,
         backgroundColor: 'white',
+        marginHorizontal: 10,
+        marginVertical: 2,
+        elevation: 7
+    },
+    container:
+    {
+        flex: 1,
+        backgroundColor: 'white'
     }
 })

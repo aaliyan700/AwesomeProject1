@@ -29,15 +29,19 @@ const AddCourseAdvisor = () => {
             //     type: singleFile.type,
             // });
             // Please change file upload URL
-            let res = await fetch(
-                `http://${IP}/StudentPortal/api/Admin/AddCourseAdvisors`,
-                {
-                    method: 'post',
-                    body: data,
-                }
-            );
-            alert("Added")
-            alert(responseJson);
+            try {
+                let res = await fetch(
+                    `http://${IP}/StudentPortal/api/Admin/AddCourseAdvisors`,
+                    {
+                        method: 'post',
+                        body: data,
+                    }
+                );
+                alert("Added")
+                alert(responseJson);
+            } catch (err) {
+                alert("something went wriong");
+            }
         } else {
 
             alert('Please Select File first');

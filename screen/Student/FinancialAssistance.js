@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Image, StyleSheet, FlatList, ToastAndroid, Text } from 'react-native';
+import { View, Image, StyleSheet, FlatList, ToastAndroid, Text, Alert } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { Button, TextInput } from 'react-native-paper';
 import { FAB } from 'react-native-paper';
@@ -47,18 +47,22 @@ const FinancialAssistance = () => {
             console.log("...", selectedImages);
             data.append('reg_no', reg_no);
             data.append('description', description);
-            const requestOptions = {
-                method: 'POST',
-                body: data,
-            };
-            const response = await fetch(
-                `http://${IP}/StudentPortal/api/Student/RequestFinancialAssistance`,
-                requestOptions
-            );
-            const results = await response.json();
-            console.log(results);
-            console.log("uploaded");
-            ToastAndroid.show('Upload', ToastAndroid.LONG);
+            if (description && selectedImages) {
+                const requestOptions = {
+                    method: 'POST',
+                    body: data,
+                };
+                const response = await fetch(
+                    `http://${IP}/StudentPortal/api/Student/RequestFinancialAssistance`,
+                    requestOptions
+                );
+                //const results = await response.json();
+                // console.log(results);
+                // console.log("uploaded");
+                ToastAndroid.show('Upload', ToastAndroid.LONG);
+            } else {
+                alert("Please fill all fields");
+            }
         } catch (err) {
             console.log(err);
         }

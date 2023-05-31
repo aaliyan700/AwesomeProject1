@@ -113,15 +113,15 @@ const Attendence = ({ navigation, route }) => {
                     body: JSON.stringify(updatedContestList), // Use the updated variable here
                 });
                 ToastAndroid.show("Your contest request is done", ToastAndroid.LONG);
+                navigation.navigate("AttendenceCourses");
             } catch (err) {
                 // Handle the error if it occurs
             }
         } else {
             ToastAndroid.show("You cannot contest this attendance", ToastAndroid.BOTTOM);
+            navigation.navigate("AttendenceCourses");
         }
     };
-
-
     useEffect(() => {
         GetAbsentList();
     }, [])

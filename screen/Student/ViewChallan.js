@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Linking } from 'react-native';
 import PDFView from 'react-native-pdf';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -50,19 +50,26 @@ const ViewChallan = () => {
         console.log('Downloaded file path:', res.path());
         setPdf(res.path());
     };
-
+    const viewPDF = () => {
+        const url = `http://${IP}/StudentPortal/ChallanFiles/${pdf}`;
+        Linking.openURL(url);
+    };
     return (
         <View style={styles.container}>
             {pdf ? (
                 <PDFView source={{ uri: `file://${pdf}` }} style={styles.pdfView} />
+
             ) : (
                 <Text>Loading PDF...</Text>
             )}
-            <Button onPress={downloadPDF} mode="contained" style={styles.btn}>Open</Button>
+            <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                <Button onPress={downloadPDF} mode="contained" style={styles.btn}>Download</Button>
+                <Button onPress={viewPDF} mode="contained" style={styles.btn}>Open</Button>
+            </View>
+
         </View>
     );
 };
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -74,7 +81,8 @@ const styles = StyleSheet.create({
     {
         marginHorizontal: 20,
         backgroundColor: '#099e78',
-        margin: 20
+        marginVertical: 5,
+        width: 170
     }
 });
 export default ViewChallan;

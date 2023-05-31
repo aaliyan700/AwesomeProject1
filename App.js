@@ -533,7 +533,12 @@ const App = () => {
                 <Stack.Screen
                     name="ParentDashboard"
                     component={ParentDashboard}
-                    options={{ headerShown: false }}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
                 />
                 <Stack.Screen
                     name="AddNoticeboard"

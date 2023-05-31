@@ -61,19 +61,34 @@ const Evaluate = ({ navigation, route }) => {
 
             // console.log(res);
             ToastAndroid.show("Thankyou for your feedback!", ToastAndroid.SHORT);
+            navigation.navigate("TeacherDashboard");
         } catch (err) {
             alert(err)
         }
     };
     const [myArray, setMyArray] = useState([]);
     let arr = [];
+    // const setValue = (questionId, answer) => {
+    //     setMyArray(prevArray => [...prevArray, { questionId, answer }]);
+    //     console.log("Arrays", myArray);
+    //     setCounter(counter + 1);
+    //     console.log("counter", counter);
+    // }
     const setValue = (questionId, answer) => {
-        setMyArray(prevArray => [...prevArray, { questionId, answer }]);
-        console.log("Arrays", myArray);
-        setCounter(counter + 1);
-        console.log("counter", counter);
-    }
+        // Check if the selected answer is already set for the question
+        if (answers[questionId] === answer) {
+            // If it is, remove the selected answer
+            const updatedAnswers = { ...answers };
+            delete updatedAnswers[questionId];
+            setAnswers(updatedAnswers);
+        } else {
+            // If it is not, update the selected answer in the answers object
+            setAnswers(prevAnswers => ({ ...prevAnswers, [questionId]: answer }));
+        }
 
+        setMyArray(prevArray => [...prevArray, { questionId, answer }]);
+        setCounter(counter + 1);
+    };
     return (
         <ScrollView>
             <View>
@@ -86,7 +101,33 @@ const Evaluate = ({ navigation, route }) => {
                                     {ele.question}
                                 </Text>
                                 <View style={{ flexDirection: "row", justifyContent: "space-around", marginTop: 5 }}>
+
                                     <TouchableOpacity
+                                        style={[styles.btnStyle, selectedAnswer === 4 && styles.selectedBtnStyle]}
+                                        onPress={() => setValue(ele.id, 4)}>
+                                        <Text style={styles.btnText}>Excellent</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={[styles.btnStyle, selectedAnswer === 3 && styles.selectedBtnStyle]}
+                                        onPress={() => setValue(ele.id, 3)}>
+                                        <Text style={styles.btnText}>Good</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={[styles.btnStyle, selectedAnswer === 2 && styles.selectedBtnStyle]}
+                                        onPress={() => setValue(ele.id, 2)}>
+                                        <Text style={styles.btnText}>Average</Text>
+                                    </TouchableOpacity>
+
+                                    <TouchableOpacity
+                                        style={[styles.btnStyle, selectedAnswer === 1 && styles.selectedBtnStyle]}
+                                        onPress={() => setValue(ele.id, 1)}>
+                                        <Text style={styles.btnText}>Below Average</Text>
+                                    </TouchableOpacity>
+
+
+                                    {/* <TouchableOpacity
                                         style={[styles.btnStyle, selectedAnswer === 'Excellent' && styles.selectedBtnStyle]}
                                         onPress={() => setValue(ele.id, 4)}>
                                         <Text style={styles.btnText}>Excellent</Text>
@@ -105,7 +146,7 @@ const Evaluate = ({ navigation, route }) => {
                                         style={[styles.btnStyle, selectedAnswer === 'Below Average' && styles.selectedBtnStyle]}
                                         onPress={() => setValue(ele.id, 1)}>
                                         <Text style={styles.btnText}>Below Average</Text>
-                                    </TouchableOpacity>
+                                    </TouchableOpacity> */}
                                 </View>
                             </View>
                         )

@@ -16,15 +16,18 @@ const UploadFine = ({ route }) => {
                 method: 'POST',
                 body: data,
             };
-
-            const response = await fetch(
-                `http://${IP}/StudentPortal/api/Student/UploadFineReceipt`,
-                requestOptions
-            );
-            // const results = await response.json();
-            // console.log(results);
-            console.log("uploaded");
-            ToastAndroid.show('Upload', ToastAndroid.LONG);
+            if (imageData != null) {
+                const response = await fetch(
+                    `http://${IP}/StudentPortal/api/Student/UploadFineReceipt`,
+                    requestOptions
+                );
+                // const results = await response.json();
+                // console.log(results);
+                console.log("uploaded");
+                ToastAndroid.show('Upload', ToastAndroid.LONG);
+            } else {
+                alert("Please select receipt");
+            }
         } catch (err) {
             console.log(err);
         }

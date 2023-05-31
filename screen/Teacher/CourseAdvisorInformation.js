@@ -6,6 +6,15 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import IP from '../ip';
 const CourseAdvisorInformation = ({ route, navigation }) => {
     const { item } = route.params;
+    if (item === null) {
+        // Handle the null data case
+        return (
+            <View>
+                <Text>Error: Null data received</Text>
+                {/* You can display an error message or take appropriate action */}
+            </View>
+        );
+    }
     const { studentList } = route.params;
     console.log("studentList", studentList);
     const [open, setOpen] = useState(false);
@@ -44,21 +53,26 @@ const CourseAdvisorInformation = ({ route, navigation }) => {
         }
         console.log(cd);
         try {
-            const response = await fetch(
-                `http://${IP}/StudentPortal/api/Teacher/AddCourseAdvisorDetail`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    advise: inputValue,
-                    reg_no: item.reg_no,
-                    course_advisor_id: studentList[0].id
-                }),
+            if (inputValue) {
+                const response = await fetch(
+                    `http://${IP}/StudentPortal/api/Teacher/AddCourseAdvisorDetail`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        advise: inputValue,
+                        reg_no: item.reg_no,
+                        course_advisor_id: studentList[0].id
+                    }),
+                }
+                );
+                // const data = await response.json();
+                // console.log("first", data);
+                alert("done");
+            } else {
+                alert("please advise ");
             }
-            );
-            const data = await response.json();
-            alert(data);
         } catch (err) {
             console.log(err);
         }

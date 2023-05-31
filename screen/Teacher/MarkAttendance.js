@@ -22,7 +22,7 @@ const MarkAttendance = ({ navigation, route }) => {
     const [selectedProgram, setSelectedProgram] = useState('asfasd')
     const [teacherCourses] = route.params.courses;
     const [isSelected, setSelection] = useState(true);
-    const [type, setType] = useState('All');
+    const [type, setType] = useState('class');
     const [alist, setAlist] = useState([]);
     const [imageData, setImageData] = useState([]);
     const [limit, setLimit] = useState(0);
@@ -121,6 +121,7 @@ const MarkAttendance = ({ navigation, route }) => {
             );
             console.log(response);
             ToastAndroid.show("Marked", ToastAndroid.BOTTOM);
+            navigation.navigate("TeacherCourses");
         } catch (error) {
             console.log('ERROR REQUEST', error);
         }
@@ -220,8 +221,8 @@ const MarkAttendance = ({ navigation, route }) => {
                 </Menu>
             </Appbar.Header>
             <ScrollView>
-                <View>
-                    <View style={{ marginHorizontal: 0, borderWidth: 2, borderColor: 'white', marginTop: 10 }}>
+                <View style={styles.container}>
+                    <View style={{ marginHorizontal: 0, borderWidth: 2, borderColor: 'white', marginTop: 10, elevation: 2 }}>
                         <Picker
                             mode='modal'
                             selectedValue={selectedProgram}
@@ -241,7 +242,7 @@ const MarkAttendance = ({ navigation, route }) => {
 
                         </Picker>
                     </View>
-                    <View style={{ backgroundColor: 'white', padding: 10, marginHorizontal: 50, marginTop: 5, marginLeft: 10, width: '80%' }}>
+                    <View style={{ backgroundColor: 'white', padding: 10, marginTop: 5, width: '90%', alignItems: 'center', elevation: 8, marginHorizontal: 20, borderRadius: 10 }}>
 
                         <RadioButton.Group onValueChange={value => setType(value)} value={type}>
                             <View style={{ flexDirection: 'row' }}>
@@ -255,7 +256,7 @@ const MarkAttendance = ({ navigation, route }) => {
                         </RadioButton.Group>
 
                         <Text style={{ color: 'black', fontSize: 18 }}>{courseName}</Text>
-                        <Text style={{ color: 'black', fontSize: 15 }}>BS{item.program}-{item.semester}{item.section}</Text>
+                        {/* <Text style={{ color: 'black', fontSize: 15 }}>{selectedProgram}</Text> */}
                         <Text style={{ color: 'black', fontSize: 18 }}>{date}</Text>
                         {/* <Button onPress={() => setOpen(true)} mode='contained' color='#099e78' style={{ marginTop: 5 }}>Select Date</Button>
                         <DatePicker
@@ -323,7 +324,13 @@ const styles = StyleSheet.create({
     box:
     {
         margin: 8,
-        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 6,
+        flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 2,
         backgroundColor: 'white',
+        elevation: 9
+    },
+    container:
+    {
+        flex: 1,
+        backgroundColor: 'white'
     }
 })

@@ -178,10 +178,7 @@ const RequestDetail = ({ route }) => {
                         showsHorizontalScrollIndicator={false}
                     />
                 ) : (
-                    <Image
-                        source={require('../images/avatar-icon.png')}
-                        style={styles.placeholderImage}
-                    />
+                    <Text style={{ textAlign: 'center' }}>Not Uploaded Any Picture</Text>
                 )}
 
                 <View style={styles.btnView}>

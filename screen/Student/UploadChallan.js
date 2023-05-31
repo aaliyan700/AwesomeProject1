@@ -4,7 +4,7 @@ import ImagePickerComponent from '../components/ImagePickerComponent';
 import { Button } from 'react-native-paper';
 import IP from '../ip';
 
-const UploadChallan = ({ route }) => {
+const UploadChallan = ({ route, navigation }) => {
     const { item } = route.params;
     console.log(item);
     const [imageData, setImageData] = useState({});
@@ -29,6 +29,7 @@ const UploadChallan = ({ route }) => {
             // console.log(results);
             console.log("uploaded");
             ToastAndroid.show('Upload', ToastAndroid.LONG);
+            navigation.navigate("Finance")
         } catch (err) {
             console.log(err);
         }

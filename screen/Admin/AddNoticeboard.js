@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Alert } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import IP from '../ip'
 import { TextInput } from 'react-native-paper'
@@ -6,6 +6,14 @@ const AddNoticeboard = ({ navigation }) => {
     //const [sectionList, setSectionList] = useState([]);
     const [title, setTitle] = useState("");
     const [des, setDes] = useState("");
+    const handleScreen = () => {
+        if (title && des) {
+            navigation.navigate("NoticeboardDetail", { title, des })
+        }
+        else {
+            alert("Please enter fields");
+        }
+    }
     return (
         <View>
             <View style={styles.header}>
@@ -24,8 +32,12 @@ const AddNoticeboard = ({ navigation }) => {
                     </TextInput>
                 </View>
             </View>
-            <Pressable style={styles.btn}
+            {/* <Pressable style={styles.btn}
                 onPressIn={() => navigation.navigate("NoticeboardDetail", { title, des })}>
+                <Text style={styles.font}>Next</Text>
+            </Pressable> */}
+            <Pressable style={styles.btn}
+                onPressIn={handleScreen}>
                 <Text style={styles.font}>Next</Text>
             </Pressable>
         </View>

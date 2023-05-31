@@ -18,7 +18,7 @@ const CourseAllocation = () => {
             data.append('name', 'Image Upload');
             data.append('courseallocationfile', {
                 uri: 'content://com.android.externalstorage.documents/document/primary%3Acourse%20allocation.xlsx',
-                name: 'courseallocation.xlsx',
+                name: 'course allocation.xlsx',
                 type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             });
             console.log(singleFile);

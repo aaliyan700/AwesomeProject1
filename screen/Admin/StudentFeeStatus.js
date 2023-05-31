@@ -76,33 +76,73 @@ const StudentFeeStatus = ({ navigation, route }) => {
         }
     }
     const renderItem = ({ item }) => {
-        return (
-            <View style={styles.feeContainer}
-            >
-                <Text style={styles.fontStyle}>Installment No:{item.installment_no}</Text>
-                <Text style={styles.fontStyle}>Amount:{item.amount}</Text>
-                <Text style={styles.fontStyle}>Expiry Date:{item.expiry_date}</Text>
-                <Text style={styles.fontStyle}>Issue Date:{item.issue_date}</Text>
-                <View style={{ marginHorizontal: 30 }}>
-                    {
-                        item.challan_image ? (
-                            <Image source={{ uri: `http://${IP}/StudentPortal/ChallanImages/${item.challan_image}` }} style={{ alignSelf: 'center', height: 200, width: 300, resizeMode: 'contain' }} />
-                        ) :
-                            (
-                                <Text>Not Uploaded Yet...</Text>
-                            )
-                    }
+        console.log("Enter")
+        if (!item) {
+            console.log("out")
+            return <Text>No challan generated yet</Text>;
+        }
+        else {
+            return (
+                <View style={styles.feeContainer}>
+                    <Text style={styles.fontStyle}>Installment No: {item.installment_no}</Text>
+                    <Text style={styles.fontStyle}>Amount: {item.amount}</Text>
+                    <Text style={styles.fontStyle}>Expiry Date: {item.expiry_date}</Text>
+                    <Text style={styles.fontStyle}>Issue Date: {item.issue_date}</Text>
+                    <View style={{ marginHorizontal: 30 }}>
+                        {item.challan_image ? (
+                            <Image
+                                source={{ uri: `http://${IP}/StudentPortal/ChallanImages/${item.challan_image}` }}
+                                style={{ alignSelf: 'center', height: 200, width: 300, resizeMode: 'contain' }}
+                            />
+                        ) : (
+                            <Text>Not Uploaded Yet...</Text>
+                        )}
+                    </View>
+                    <View style={{ alignItems: 'center' }}>
+                        {item.status ? (
+                            <Button mode="contained" style={styles.btn1} onPress={() => showDialog(item.id)}>
+                                Reject
+                            </Button>
+                        ) : (
+                            <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>
+                                Approve
+                            </Button>
+                        )}
+                    </View>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    {item.status ? (
-                        <Button mode="contained" style={styles.btn1} onPress={() => showDialog(item.id)}>Reject</Button>
-                    ) : (
-                        <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
-                    )}
-                </View>
-            </View>
-        );
+            );
+        }
     };
+
+
+    // const renderItem = ({ item }) => {
+    //     return (
+    //         <View style={styles.feeContainer}
+    //         >
+    //             <Text style={styles.fontStyle}>Installment No:{item.installment_no}</Text>
+    //             <Text style={styles.fontStyle}>Amount:{item.amount}</Text>
+    //             <Text style={styles.fontStyle}>Expiry Date:{item.expiry_date}</Text>
+    //             <Text style={styles.fontStyle}>Issue Date:{item.issue_date}</Text>
+    //             <View style={{ marginHorizontal: 30 }}>
+    //                 {
+    //                     item.challan_image ? (
+    //                         <Image source={{ uri: `http://${IP}/StudentPortal/ChallanImages/${item.challan_image}` }} style={{ alignSelf: 'center', height: 200, width: 300, resizeMode: 'contain' }} />
+    //                     ) :
+    //                         (
+    //                             <Text>Not Uploaded Yet...</Text>
+    //                         )
+    //                 }
+    //             </View>
+    //             <View style={{ alignItems: 'center' }}>
+    //                 {item.status ? (
+    //                     <Button mode="contained" style={styles.btn1} onPress={() => showDialog(item.id)}>Reject</Button>
+    //                 ) : (
+    //                     <Button mode="contained" style={styles.btn1} onPress={() => approveFee(item.id)}>Approve</Button>
+    //                 )}
+    //             </View>
+    //         </View>
+    //     );
+    // };
     useEffect(() => {
         getFeeStatus();
     }, []);
