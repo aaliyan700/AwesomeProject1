@@ -63,7 +63,7 @@ const LoginScreen = ({ navigation }) => {
                 setIsLoading(false);
             }
             else if (data.role == "parent") {
-                navigation.navigate("ParentDashboard");
+                navigation.navigate("ParentDashboard", { data });
             }
             else if (data.role == "teacher") {
                 navigation.navigate("TeacherDashboard");

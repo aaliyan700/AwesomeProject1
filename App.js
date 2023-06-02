@@ -65,6 +65,10 @@ import TeacherRanking from './screen/Student/TeacherRanking';
 import ViewRanking from './screen/Student/ViewRanking';
 import InstallmentList from './screen/Admin/InstallmentList';
 import InstallmentDetail from './screen/Admin/InstallmentDetail';
+import ViewAttendenceCourses from './screen/Parent/ViewAttendanceCourses';
+import ViewAsgDetails from './screen/Parent/ViewAsgDetails';
+import ViewStudentPerformance from './screen/Parent/ViewStudentPerformance';
+import ViewExamsDetails from './screen/Parent/ViewExamsDetails';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -681,6 +685,46 @@ const App = () => {
                 <Stack.Screen
                     name="InstallmentDetail"
                     component={InstallmentDetail}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewAttendenceCourses"
+                    component={ViewAttendenceCourses}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewAsgDetails"
+                    component={ViewAsgDetails}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewStudentPerformance"
+                    component={ViewStudentPerformance}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewExamsDetails"
+                    component={ViewExamsDetails}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {
