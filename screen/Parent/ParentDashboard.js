@@ -38,7 +38,7 @@ const ParentDashboard = ({ route, navigation }) => {
                         <View key={index} style={styles.card}>
                             <Text style={styles.text}>{item.reg_no}</Text>
                             <Button mode="contained" style={styles.btn} onPress={() => navigation.navigate("ViewAttendenceCourses", { item })}>Attendance</Button>
-                            <Button mode="contained" style={styles.btn}>Finance</Button>
+                            <Button mode="contained" style={styles.btn} onPress={() => navigation.navigate("ViewFinance", { item })}>Finance</Button>
                             <Button mode="contained" style={styles.btn} onPress={() => navigation.navigate("ViewStudentPerformance", { item })}>Results</Button>
                         </View>
                     )

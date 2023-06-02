@@ -69,6 +69,12 @@ import ViewAttendenceCourses from './screen/Parent/ViewAttendanceCourses';
 import ViewAsgDetails from './screen/Parent/ViewAsgDetails';
 import ViewStudentPerformance from './screen/Parent/ViewStudentPerformance';
 import ViewExamsDetails from './screen/Parent/ViewExamsDetails';
+import ViewFinance from './screen/Parent/ViewFinance';
+import ViewFineDetails from './screen/Parent/ViewFineDetails';
+import ViewFinancialAssistance from './screen/Parent/ViewFinancialAssistance';
+import ViewFeeDetails from './screen/Parent/ViewFeeDetails';
+import FeeStatus from './screen/Parent/FeeStatus';
+import FeeChallans from './screen/Parent/FeeChallans';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -732,6 +738,69 @@ const App = () => {
                         }
                     }}
                 />
+                <Stack.Screen
+                    name="ViewFinance"
+                    component={ViewFinance}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewFineDetails"
+                    component={ViewFineDetails}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewFinancialAssistance"
+                    component={ViewFinancialAssistance}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewFeeDetails"
+                    component={ViewFeeDetails}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="FeeStatus"
+                    component={FeeStatus}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="FeeChallans"
+                    component={FeeChallans}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+
+
+
             </Stack.Navigator>
 
         </NavigationContainer>
