@@ -7,20 +7,20 @@ const Notification = ({ navigation }) => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const GetNotification = async (select) => {
+    const GetNotification = async () => {
         console.log('fetching...');
         const reg_no = await AsyncStorage.getItem('username');
         console.log(reg_no);
         try {
-            console.log(select, 'inapi');
-            const query = `http://${IP}/StudentPortal/api/Notification/GetNotificatons?username=${reg_no}&&session=${select}`;
+            const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${reg_no}`;
             console.log(query);
             const response = await fetch(query, {
                 method: 'GET',
             });
             console.log('Done');
             const data = await response.json();
-            setList(data);
+            console.log("data", data)
+            setList(data)
             setLoading(false);
             console.log(list);
         } catch (error) {
@@ -65,7 +65,7 @@ const Notification = ({ navigation }) => {
                 {loading ? (
                     <ActivityIndicator size="large" color="#099e78" />
                 ) : (
-                    list.map((item, index) => (
+                    list?.map((item, index) => (
                         <Pressable key={index} style={styles.card} onPress={() => handleNavigation(item.type)}>
                             <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
                             <Text style={{ fontWeight: '500' }}>{item.dateTime}</Text>
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         padding: 10,
         backgroundColor: 'white',
-        elevation: 9,
+        elevation: 3,
         borderRadius: 10
     },
 });
