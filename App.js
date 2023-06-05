@@ -75,6 +75,7 @@ import ViewFinancialAssistance from './screen/Parent/ViewFinancialAssistance';
 import ViewFeeDetails from './screen/Parent/ViewFeeDetails';
 import FeeStatus from './screen/Parent/FeeStatus';
 import FeeChallans from './screen/Parent/FeeChallans';
+import Notification from './screen/Student/Notification';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -798,7 +799,16 @@ const App = () => {
                         }
                     }}
                 />
-
+                <Stack.Screen
+                    name="Notification"
+                    component={Notification}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
 
 
             </Stack.Navigator>

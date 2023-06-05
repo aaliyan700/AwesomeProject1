@@ -10,17 +10,18 @@ const TakeFine = ({ route }) => {
         try {
             if (amount && des) {
                 let f = { reg_no: item.reg_no, amount: amount, description: des }
+                console.log(f);
                 const response = await fetch(
                     `http://${IP}/StudentPortal/api/Admin/AddFine`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        reg_no: item.reg_no, amount: amount, description: des
-                    }),
+                    body: JSON.stringify(f),
                 }
                 );
+                const data = await response.json();
+                console.log("data", data);
                 alert("Fine Added !");
             }
             else {

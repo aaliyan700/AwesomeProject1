@@ -150,7 +150,7 @@ const Dashboard = ({ navigation, route }) => {
                             <Text style={styles.header2Font}>Welcome ,{userData.first_name}</Text>
                         </View>
                         <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 15 }}>
-                            <Icon name="notifications" size={30} color='#fff' />
+                            <Icon name="notifications" size={30} color='#fff' onPress={() => navigation.navigate("Notification")} />
                             <TouchableOpacity>
 
                                 {

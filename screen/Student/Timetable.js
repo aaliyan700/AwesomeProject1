@@ -237,7 +237,6 @@ const Timetable = () => {
                                 <Divider style={{ backgroundColor: 'black', marginHorizontal: 10 }}></Divider>
                                 {item?.detail.map((detailItem, index) => (
                                     <View key={index} style={{ flexDirection: 'row', padding: 16, marginLeft: 30 }}>
-
                                         <Text style={{ flex: 2 }} >{detailItem.course}</Text>
                                         <Text style={{ flex: 2 }} >{detailItem.venue}</Text>
                                         <Text style={{ flex: 2 }} >{detailItem.time}</Text>
