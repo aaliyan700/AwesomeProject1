@@ -2,15 +2,18 @@ import { StyleSheet, Text, View, Pressable, ActivityIndicator, Button, ScrollVie
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
-const Notification = ({ navigation }) => {
+import moment from 'moment';
+const Notification = ({ navigation, route }) => {
+    const { userData } = route.params;
+    console.log(userData);
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
     const GetNotification = async () => {
         console.log('fetching...');
-        const reg_no = await AsyncStorage.getItem('username');
-        console.log(reg_no);
+        // const reg_no = await AsyncStorage.getItem('username');
+        // console.log(reg_no);
         try {
-            const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${reg_no}`;
+            const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${userData.username}`;
             console.log(query);
             const response = await fetch(query, {
                 method: 'GET',
@@ -29,7 +32,7 @@ const Notification = ({ navigation }) => {
     useEffect(() => {
         const interval = setInterval(() => {
             GetNotification();
-        }, 4000);
+        }, 1000);
 
         return () => {
             clearInterval(interval);
@@ -59,19 +62,60 @@ const Notification = ({ navigation }) => {
     };
     return (
         <View style={styles.container}>
-            <ScrollView>
+            {/* <ScrollView>
                 {loading ? (
                     <ActivityIndicator size="large" color="#099e78" />
                 ) : (
                     list?.map((item, index) => (
-                        <Pressable key={index} style={styles.card} onPress={() => handleNavigation(item.type)}>
-                            <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
-                            <Text style={{ fontWeight: '500' }}>{item.dateTime}</Text>
-                        </Pressable>
+                        
+                        item.status == false ? (
+                            <Pressable key={index} style={styles.card1} onPress={() => handleNavigation(item.type)}>
+                                <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
+                                <Text style={{ fontWeight: '500' }}>{item.dateTime}</Text>
+                            </Pressable>) : (
+                            <Pressable key={index} style={styles.card} onPress={() => handleNavigation(item.type)}>
+                                <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
+                                <Text style={{ fontWeight: '500' }}>{item.dateTime}</Text>
+                            </Pressable>
+                        )
+
                     ))
                 )}
+            </ScrollView> */}
+            <ScrollView>
+                {loading ? (
+                    <ActivityIndicator size="large" color="#099e78" />
+                ) : (
+                    list?.map((item, index) => {
+                        const timeDifference = moment(item.dateTime, 'DD-MM-YYYY,HH:mm:ss').fromNow();
+
+                        return (
+                            item.status === false ? (
+                                <Pressable
+                                    key={index}
+                                    style={styles.card1}
+                                    onPress={() => handleNavigation(item.type)}
+                                >
+                                    <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
+                                    <Text style={{ fontWeight: '500', textAlign: 'right' }}>{timeDifference}</Text>
+                                </Pressable>
+                            ) : (
+                                <Pressable
+                                    key={index}
+                                    style={styles.card}
+                                    onPress={() => handleNavigation(item.type)}
+                                >
+                                    <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
+                                    <Text style={{ fontWeight: '500', textAlign: 'right' }}>{timeDifference}</Text>
+                                </Pressable>
+                            )
+                        );
+                    })
+                )}
             </ScrollView>
-        </View>
+
+
+        </View >
     );
 };
 
@@ -89,6 +133,14 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         elevation: 3,
         borderRadius: 10
+    },
+    card1: {
+        marginHorizontal: 10,
+        marginVertical: 3,
+        padding: 10,
+        backgroundColor: "#ADD8E6",
+        elevation: 3,
+        borderRadius: 2
     },
 });
 
