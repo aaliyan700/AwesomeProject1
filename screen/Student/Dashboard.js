@@ -5,7 +5,163 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
 import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import notifee from '@notifee/react-native';
 const Dashboard = ({ navigation, route }) => {
+
+    const [loading, setLoading] = useState(true);
+
+    async function onDisplayNotification(newNotifications) {
+        try {
+            // Request permissions (required for iOS)
+            await notifee.requestPermission();
+
+            // Create a channel (required for Android)
+            const channelId = await notifee.createChannel({
+                id: 'default',
+                name: 'Default Channel',
+            });
+
+            // Display a notification for each new item in the list
+            for (const item of newNotifications) {
+                await notifee.displayNotification({
+                    title: item.type,
+                    body: item.detail,
+                    android: {
+                        channelId,
+                        pressAction: {
+                            id: 'default',
+                        },
+                    },
+                });
+            }
+        } catch (error) {
+            console.error('Error displaying notification:', error);
+        }
+    }
+
+    const GetNotification = async (previousData) => {
+        console.log('fetching...');
+        const reg_no = await AsyncStorage.getItem('username');
+        console.log(reg_no);
+        try {
+            const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${reg_no}`;
+            console.log(query);
+            const response = await fetch(query, {
+                method: 'GET',
+            });
+            console.log('Done');
+            const data = await response.json();
+            console.log('data', data);
+            setLoading(false);
+
+            // Check for new notifications
+            const newNotifications = data.filter(item => !previousData.some(prevItem => prevItem.id === item.id));
+            if (newNotifications.length > 0) {
+                // Call the notification function when there are new notifications
+                onDisplayNotification(newNotifications);
+            }
+
+            return data;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        let previousData = [];
+
+        GetNotification(previousData)
+            .then(data => {
+                previousData = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        const interval = setInterval(() => {
+            GetNotification(previousData)
+                .then(data => {
+                    previousData = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }, 4000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
+
+
+
+    // const [list, setList] = useState([]);
+    // const [loading, setLoading] = useState(true);
+
+    // async function onDisplayNotification() {
+    //     try {
+    //         // Request permissions (required for iOS)
+    //         await notifee.requestPermission();
+
+    //         // Create a channel (required for Android)
+    //         const channelId = await notifee.createChannel({
+    //             id: 'default',
+    //             name: 'Default Channel',
+    //         });
+
+    //         // Display a notification for each item in the list
+    //         for (const item of list) {
+    //             await notifee.displayNotification({
+    //                 title: item.type,
+    //                 body: item.detail,
+    //                 android: {
+    //                     channelId,
+    //                     pressAction: {
+    //                         id: 'default',
+    //                     },
+    //                 },
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Error displaying notification:', error);
+    //     }
+    // }
+
+    // const GetNotification = async () => {
+    //     console.log('fetching...');
+    //     const reg_no = await AsyncStorage.getItem('username');
+    //     console.log(reg_no);
+    //     try {
+    //         const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${reg_no}`;
+    //         console.log(query);
+    //         const response = await fetch(query, {
+    //             method: 'GET',
+    //         });
+    //         console.log('Done');
+    //         const data = await response.json();
+    //         console.log('data', data);
+    //         setList(data);
+    //         setLoading(false);
+    //         console.log(list);
+
+    //         // Call the notification function when data is fetched
+    //         onDisplayNotification();
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         GetNotification();
+    //     }, 4000);
+
+    //     return () => {
+    //         clearInterval(interval);
+    //     };
+    // }, []);
+
+
     const [username, setUsername] = useState('');
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);

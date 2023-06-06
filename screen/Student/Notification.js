@@ -2,11 +2,9 @@ import { StyleSheet, Text, View, Pressable, ActivityIndicator, Button, ScrollVie
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
-
 const Notification = ({ navigation }) => {
     const [list, setList] = useState([]);
     const [loading, setLoading] = useState(true);
-
     const GetNotification = async () => {
         console.log('fetching...');
         const reg_no = await AsyncStorage.getItem('username');
@@ -93,5 +91,4 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
 });
-
 
