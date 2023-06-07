@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, ActivityIndicator, Button, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Pressable, ActivityIndicator, Button, ScrollView, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
@@ -38,7 +38,20 @@ const Notification = ({ navigation, route }) => {
             clearInterval(interval);
         };
     }, []);
-    const handleNavigation = (item) => {
+    const handleNavigation = async (item, id) => {
+        try {
+            const response = await fetch(
+                `http://${IP}/StudentPortal/api/Student/SeenNotification?username=${userData.username}&id=
+                ${id}`, {
+                method: 'POST',
+            }
+            );
+            const data = await response.json();
+            await GetNotification();
+            console.log(data);
+        } catch (err) {
+            console.log(err);
+        }
         if (item === 'datesheet') {
             navigation.navigate('Datesheet');
         } else if (item === 'timetable') {
@@ -94,10 +107,14 @@ const Notification = ({ navigation, route }) => {
                                 <Pressable
                                     key={index}
                                     style={styles.card1}
-                                    onPress={() => handleNavigation(item.type)}
+                                    onPress={() => handleNavigation(item.type, item.id)}
                                 >
                                     <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
-                                    <Text style={{ fontWeight: '500', textAlign: 'right' }}>{timeDifference}</Text>
+
+                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                        <View style={styles.redDot}></View>
+                                        <Text style={{ fontWeight: '500', flex: 1 }}>{timeDifference}</Text>
+                                    </View>
                                 </Pressable>
                             ) : (
                                 <Pressable
@@ -106,7 +123,7 @@ const Notification = ({ navigation, route }) => {
                                     onPress={() => handleNavigation(item.type)}
                                 >
                                     <Text style={{ fontWeight: '700' }}>{item.detail}</Text>
-                                    <Text style={{ fontWeight: '500', textAlign: 'right' }}>{timeDifference}</Text>
+                                    <Text style={{ fontWeight: '500' }}>{timeDifference}</Text>
                                 </Pressable>
                             )
                         );
@@ -125,6 +142,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
+    },
+    redDot: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        backgroundColor: 'red',
+        marginRight: 5,
+        marginTop: 7,
     },
     card: {
         marginHorizontal: 10,
