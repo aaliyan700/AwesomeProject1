@@ -101,6 +101,8 @@ const ViewContests = ({ navigation }) => {
                                         mode="outlined" style={{ backgroundColor: '#099e78', margin: 2 }}>Accept</Button>
                                     <Button color="white" onPress={() => RejectContest(ele.attendance_id)}
                                         style={{ backgroundColor: '#099e78', margin: 2 }}>Reject</Button>
+                                    <Button color="white" onPress={() => navigation.navigate("ViewContestImages", { ele })}
+                                        style={{ backgroundColor: '#099e78', margin: 2 }}>View Images</Button>
                                 </View>
                             </View>
                         )

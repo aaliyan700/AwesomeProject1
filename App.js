@@ -76,6 +76,7 @@ import ViewFeeDetails from './screen/Parent/ViewFeeDetails';
 import FeeStatus from './screen/Parent/FeeStatus';
 import FeeChallans from './screen/Parent/FeeChallans';
 import Notification from './screen/Student/Notification';
+import ViewContestImages from './screen/Teacher/ViewContestImages';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -802,6 +803,16 @@ const App = () => {
                 <Stack.Screen
                     name="Notification"
                     component={Notification}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewContestImages"
+                    component={ViewContestImages}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {

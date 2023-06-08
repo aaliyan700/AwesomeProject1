@@ -37,7 +37,14 @@ const FeeDetails = ({ navigation }) => {
                     Generate Challan
                 </Button>
             );
-        } else if (feeInfo.status === "requested") {
+        } else if (feeInfo.status === "dateEnd") {
+            return (
+                <Button mode="contained" style={styles.btn1}>
+                    Date End
+                </Button>
+            )
+        }
+        else if (feeInfo.status === "requested") {
             return (
                 <Button mode="contained" style={styles.btn1}>
                     Requested
@@ -56,6 +63,8 @@ const FeeDetails = ({ navigation }) => {
 
             );
         }
+
+
     };
 
     return (
