@@ -77,6 +77,7 @@ import FeeStatus from './screen/Parent/FeeStatus';
 import FeeChallans from './screen/Parent/FeeChallans';
 import Notification from './screen/Student/Notification';
 import ViewContestImages from './screen/Teacher/ViewContestImages';
+import ExitForm from './screen/Student/ExitForm';
 const Stack = createNativeStackNavigator();
 const App = () => {
     return (
@@ -813,6 +814,16 @@ const App = () => {
                 <Stack.Screen
                     name="ViewContestImages"
                     component={ViewContestImages}
+                    options={{
+                        headerTintColor: "white",
+                        headerStyle: {
+                            backgroundColor: '#099e78',
+                        }
+                    }}
+                />
+                <Stack.Screen
+                    name="ExitForm"
+                    component={ExitForm}
                     options={{
                         headerTintColor: "white",
                         headerStyle: {
