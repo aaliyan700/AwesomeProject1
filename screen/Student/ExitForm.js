@@ -158,12 +158,13 @@ import { View, Text, ScrollView, StyleSheet } from 'react-native';
 import { RadioButton, TextInput, Button } from 'react-native-paper';
 import IP from '../ip';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const ExitForm = () => {
+const ExitForm = ({ navigation }) => {
     const [formData, setFormData] = useState({});
     const [selectedValues, setSelectedValues] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
+    console.log(currentSectionIndex, 'index')
     const [username, setUsername] = useState("");
     const getQuestions = async () => {
         setLoading(true);
@@ -207,12 +208,28 @@ const ExitForm = () => {
         });
     };
 
-    const handleNextSection = () => {
-        if (currentSectionIndex < Object.keys(formData).length - 1) {
+    const handleNextSection = async () => {
+        if (currentSectionIndex < 6) {
             setCurrentSectionIndex((prevIndex) => prevIndex + 1);
         } else {
             // Submit the form data
-            console.log(selectedValues);
+            try {
+                let formDetails = selectedValues;
+                const response = await fetch(
+                    `http://${IP}/StudentPortal/api/Student/SubmitExitForm`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formDetails)
+                }
+                );
+                // const data = await response.JSON();
+                // console.log("data", data);
+                alert("Thanks for your feedback")
+            } catch (err) {
+                console.log(err);
+            }
         }
     };
 
@@ -269,7 +286,7 @@ const ExitForm = () => {
                     </View>
                 ))}
                 <Button mode="contained" onPress={handleNextSection} style={{ backgroundColor: '#099e78' }}>
-                    {currentSectionIndex < sections.length - 1 ? 'Next' : 'Submit'}
+                    {currentSectionIndex < 6 ? 'Next' : 'Submit'}
                 </Button>
             </View>
         </ScrollView>
