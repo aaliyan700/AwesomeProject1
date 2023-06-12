@@ -110,7 +110,7 @@ const RequestDetail = ({ route }) => {
             let query = `http://${IP}/StudentPortal/api/Admin/GetFinancialAssistanceImages?id=${item.id}`;
             const response = await fetch(query, { method: 'GET' });
             const data = await response.json();
-            console.log(data);
+            console.log("data", data);
             setFileImage(data);
             setIsLoading(false); // Set isLoading to false after data fetch
         } catch (err) {
@@ -153,12 +153,14 @@ const RequestDetail = ({ route }) => {
             <View style={styles.imageContainer}>
 
                 <Image
-                    source={{ uri: `http://${IP}/StudentPortal/FinancialAssistanceImages/${item}` }}
+                    source={{ uri: `http://${IP}/StudentPortal/FinancialAssistanceImages/${item.image}` }}
                     style={styles.image}
                 />
             </View>
         </View>
     );
+    const uri = `http://${IP}/StudentPortal/FinancialAssistanceImages/${item}`;
+    console.log("images", uri);
     return (
         <Provider>
             <View style={styles.container}>
@@ -221,9 +223,8 @@ const styles = StyleSheet.create({
         borderColor: 'black',
     },
     image: {
-        height: 300,
-        width: 300,
-        resizeMode: 'contain',
+        height: 200,
+        width: 200,
     },
     placeholderImage: {
         alignSelf: 'center',
