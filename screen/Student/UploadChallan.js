@@ -29,7 +29,7 @@ const UploadChallan = ({ route, navigation }) => {
             // console.log(results);
             console.log("uploaded");
             ToastAndroid.show('Upload', ToastAndroid.LONG);
-            navigation.navigate("ViewFinance")
+            // navigation.navigate("ViewFinance")
         } catch (err) {
             console.log(err);
         }

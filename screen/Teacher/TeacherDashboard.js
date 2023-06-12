@@ -5,7 +5,90 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import IP from '../ip';
 import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
+import notifee from '@notifee/react-native';
 const TeacherDashboard = ({ navigation }) => {
+    const [loading, setLoading] = useState(true);
+    async function onDisplayNotification(newNotifications) {
+        try {
+            // Request permissions (required for iOS)
+            await notifee.requestPermission();
+
+            // Create a channel (required for Android)
+            const channelId = await notifee.createChannel({
+                id: 'default',
+                name: 'Default Channel',
+            });
+
+            // Display a notification for each new item in the list
+            for (const item of newNotifications) {
+                await notifee.displayNotification({
+                    title: item.type,
+                    body: item.detail,
+                    android: {
+                        channelId,
+                        pressAction: {
+                            id: 'default',
+                        },
+                        sound: 'alarm', // Add this line to specify the sound
+                        largeIcon: require('../images/arid.png'), // Add this line to specify the large ico
+                    },
+                });
+            }
+        } catch (error) {
+            console.error('Error displaying notification:', error);
+        }
+    }
+    const GetNotification = async (previousData) => {
+        console.log('fetching...');
+        const reg_no = await AsyncStorage.getItem('username');
+        console.log(reg_no);
+        try {
+            const query = `http://${IP}/StudentPortal/api/Notification/GetNotifications?username=${reg_no}`;
+            console.log(query);
+            const response = await fetch(query, {
+                method: 'GET',
+            });
+            console.log('Done');
+            const data = await response.json();
+            console.log('data', data);
+            setLoading(false);
+            // Check for new notifications
+            const newNotifications = data.filter(item => !previousData.some(prevItem => prevItem.id === item.id) && item.status === false);
+            if (newNotifications.length > 0) {
+                // Call the notification function when there are new notifications
+                onDisplayNotification(newNotifications);
+            }
+            return data;
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    useEffect(() => {
+        let previousData = [];
+
+        GetNotification(previousData)
+            .then(data => {
+                previousData = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        const interval = setInterval(() => {
+            GetNotification(previousData)
+                .then(data => {
+                    previousData = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }, 4000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
     const record = [
         {
             title: "Courses",
@@ -104,7 +187,7 @@ const TeacherDashboard = ({ navigation }) => {
                         <Text style={styles.header2Font}>Welcome ,{userData.first_name}</Text>
                     </View>
                     <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 5 }}>
-                        <Icon name="notifications" size={30} color='#fff' />
+                        <Icon name="notifications" size={30} color='#fff' onPress={() => navigation.navigate("Notification", { userData })} />
                         {/* <TouchableOpacity
                         onPress={() => navigation.navigate('Notification')}>
                         <Image source={require('../images/notification.png')} style={{ marginRight: 10, alignSelf: 'center', height: 30, width: 30, resizeMode: 'contain' }} />

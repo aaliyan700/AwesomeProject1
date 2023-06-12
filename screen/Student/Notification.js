@@ -68,6 +68,9 @@ const Notification = ({ navigation, route }) => {
         else if (item == "fine") {
             navigation.navigate('FineDetail');
         }
+        else if (item == "teacher_contest") {
+            navigation.navigate("ViewContests");
+        }
         else {
             // Handle other types or default case
             // navigation.navigate('OtherScreen');

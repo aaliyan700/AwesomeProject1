@@ -92,31 +92,31 @@ const Dashboard = ({ navigation, route }) => {
         }
     };
 
-    // useEffect(() => {
-    //     let previousData = [];
+    useEffect(() => {
+        let previousData = [];
 
-    //     GetNotification(previousData)
-    //         .then(data => {
-    //             previousData = data;
-    //         })
-    //         .catch(error => {
-    //             console.error('Error:', error);
-    //         });
+        GetNotification(previousData)
+            .then(data => {
+                previousData = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
-    //     const interval = setInterval(() => {
-    //         GetNotification(previousData)
-    //             .then(data => {
-    //                 previousData = data;
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error:', error);
-    //             });
-    //     }, 4000);
+        const interval = setInterval(() => {
+            GetNotification(previousData)
+                .then(data => {
+                    previousData = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }, 4000);
 
-    //     return () => {
-    //         clearInterval(interval);
-    //     };
-    // }, []);
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
     const [username, setUsername] = useState('');
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
