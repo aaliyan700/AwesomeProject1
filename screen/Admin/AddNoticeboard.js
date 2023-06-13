@@ -32,10 +32,6 @@ const AddNoticeboard = ({ navigation }) => {
                     </TextInput>
                 </View>
             </View>
-            {/* <Pressable style={styles.btn}
-                onPressIn={() => navigation.navigate("NoticeboardDetail", { title, des })}>
-                <Text style={styles.font}>Next</Text>
-            </Pressable> */}
             <Pressable style={styles.btn}
                 onPressIn={handleScreen}>
                 <Text style={styles.font}>Next</Text>

@@ -264,7 +264,6 @@ const Evaluate = ({ navigation, route }) => {
             // Add the question to myArray
             setMyArray((prevArray) => [...prevArray, { questionId, answer }]);
         }
-
         setCounter(counter + 1);
     };
 

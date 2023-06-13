@@ -5,6 +5,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { Button, Divider } from 'react-native-paper';
 import IP from '../ip';
 import { calendarFormat } from 'moment';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const NoticeboardDetail = ({ route }) => {
     const { title, des } = route.params;
     console.log(title, des);
@@ -43,10 +44,20 @@ const NoticeboardDetail = ({ route }) => {
             ...selectedSections.map((section) => section.split('-')[2]),
         ];
         console.log("first", selectedCheckboxes);
+        const reg_no = await AsyncStorage.getItem('username');
+        console.log(reg_no);
+        let author;
+        if (reg_no == "ihsan@242") {
+            author = "admin";
+        }
+        else {
+            author = reg_no.split('@')[0];
+        }
         const noticeBoardData = {
             n: {
                 title: title,
-                description: des
+                description: des,
+                author: author
             },
             slist: finalData
         };

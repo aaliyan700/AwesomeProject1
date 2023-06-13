@@ -180,6 +180,7 @@ const TeacherDashboard = ({ navigation }) => {
                             onDismiss={closeMenu}
                             anchor={<Appbar.Action icon={appbarIcon} onPress={openMenu} />}>
                             <Menu.Item title="View Profile" />
+                            <Menu.Item title="Add Noticeboard" onPress={() => navigation.navigate("AddNoticeboard")} />
                             <Menu.Item title="Logout" onPress={logout} />
                             <Divider />
                         </Menu>
