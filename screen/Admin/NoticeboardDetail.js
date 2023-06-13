@@ -26,8 +26,10 @@ const NoticeboardDetail = ({ route }) => {
     const [selectedPrograms, setSelectedPrograms] = useState([]);
     const [selectedSemesters, setSelectedSemesters] = useState([]);
     const [selectedSections, setSelectedSections] = useState([]);
-
+    const [finalData, setFinalData] = useState([])
+    console.log(finalData, 'finalData')
     const handleProgramPress = (program) => {
+        console.log(program, 'prgram')
         if (selectedPrograms.includes(program)) {
             setSelectedPrograms(selectedPrograms.filter((p) => p !== program));
         } else {
@@ -35,36 +37,32 @@ const NoticeboardDetail = ({ route }) => {
         }
     };
     const handleShowSelection = async () => {
+
         const selectedCheckboxes = [
-            ...selectedPrograms,
-            ...selectedSemesters.map((semester) => semester.split('-')[1]),
+            ...selectedSemesters.map((semester) => semester),
             ...selectedSections.map((section) => section.split('-')[2]),
         ];
+        console.log("first", selectedCheckboxes);
         const noticeBoardData = {
             n: {
                 title: title,
                 description: des
             },
-            slist: []
+            slist: finalData
         };
-
-        selectedPrograms.forEach((program) => {
-            selectedSemesters.forEach((semesterValue) => {
-                //const filteredSection = selectedSections.filter((sectionValue) => sectionValue.startsWith(`${program}-${semesterValue}`));
-                const filteredSection = selectedSections
-                console.log(filteredSection, "///")
-                noticeBoardData.slist.push({
-                    section: filteredSection.map((sectionValue) => sectionValue.split('-')[2]),
-                    semester: parseInt(semesterValue.split('-')[1]),
-                    program: program
-                });
-                console.log("<<<<<<??", noticeBoardData.slist);
-            });
-        });
-        console.log(noticeBoardData);
-        noticeBoardData.slist.map((i) => {
-            console.log("i", i.section)
-        })
+        // selectedPrograms.forEach((program) => {
+        //     selectedSemesters.forEach((semesterValue) => {
+        //         //const filteredSection = selectedSections.filter((sectionValue) => sectionValue.startsWith(`${program}-${semesterValue}`));
+        //         const filteredSection = selectedSections
+        //         console.log(filteredSection, "///")
+        //         noticeBoardData.slist.push({
+        //             section: filteredSection.map((sectionValue) => sectionValue.split('-')[2]),
+        //             semester: parseInt(semesterValue.split('-')[1]),
+        //             program: program
+        //         });
+        //         console.log("<<<<<<??", noticeBoardData.slist);
+        //     });
+        // });
         response = await fetch(
             `http://${IP}/StudentPortal/api/admin/AddNoticeBoard`, {
             method: 'POST',
@@ -85,7 +83,7 @@ const NoticeboardDetail = ({ route }) => {
             setSelectedSemesters([...selectedSemesters, `${program}-${semesterNo}`]);
         }
     };
-
+    console.log(selectedSemesters, 'semester')
     const handleSectionPress = (program, semesterNo, section) => {
         const key = `${program}-${semesterNo}-${section}`;
         if (selectedSections.includes(key)) {
@@ -93,8 +91,48 @@ const NoticeboardDetail = ({ route }) => {
         } else {
             setSelectedSections([...selectedSections, key]);
         }
-    };
+        const existingDataIndex = finalData.findIndex(
+            (data) => data.program === program && data.semester === semesterNo
+        );
 
+        if (existingDataIndex !== -1) {
+            // Program and semester already exist in finalData
+            const newData = finalData[existingDataIndex];
+            if (newData.section.includes(section)) {
+                // Remove section from the array
+                newData.section = newData.section.filter((sec) => sec !== section);
+                if (newData.section.length === 0) {
+                    // Remove the object if section array becomes empty
+                    const updatedFinalData = finalData.filter(
+                        (data, index) => index !== existingDataIndex
+                    );
+                    setFinalData(updatedFinalData);
+                } else {
+                    const updatedFinalData = [...finalData];
+                    updatedFinalData[existingDataIndex] = newData;
+                    setFinalData(updatedFinalData);
+                }
+            } else {
+                // Add section to the array
+                newData.section.push(section);
+                const updatedFinalData = [...finalData];
+                updatedFinalData[existingDataIndex] = newData;
+                setFinalData(updatedFinalData);
+            }
+        } else {
+            // Program and semester do not exist in finalData
+            setFinalData((prevData) => [
+                ...prevData,
+                {
+                    program: program,
+                    semester: semesterNo,
+                    section: [section]
+                }
+            ]);
+        }
+
+
+    };
     return (
         <ScrollView>
             <View>

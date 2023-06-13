@@ -202,17 +202,18 @@ const FinancialAssistance = () => {
             //     });
             // });
             selectedImages.forEach((image, index) => {
-                const imageName = imageNames[index] || `image${index}`; // Use the image name from the array or a default value
-                data.append(`image${index}`, {
+                const imageName = imageNames[index] || 'default'; // Use the image name from the array or a default value
+
+                data.append(imageName, {
                     uri: image.uri,
                     type: image.type,
                     name: `${imageName}.${image.fileName.split('.').pop()}`,
                 });
             });
 
+
             data.append('reg_no', reg_no);
             data.append('description', description);
-
             if (description && selectedImages.length > 0) {
                 const requestOptions = {
                     method: 'POST',

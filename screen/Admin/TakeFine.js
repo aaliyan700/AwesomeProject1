@@ -20,8 +20,8 @@ const TakeFine = ({ route }) => {
                     body: JSON.stringify(f),
                 }
                 );
-                const data = await response.json();
-                console.log("data", data);
+                // const data = await response.json();
+                // console.log("data", data);
                 alert("Fine Added !");
             }
             else {
